@@ -3,11 +3,11 @@ import {ItemTypes} from "../data/types";
 import {addElem} from "../data/Data";
 import Member from "./Member";
 
-function Group(props) {
+function Group({ groupId, title, members, color }) {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ItemTypes.Member,
     drop: (item, monitor) => {
-      addElem(props.groupId, item.memberId)
+      addElem(groupId, item.memberId)
       console.log('dropped', item, monitor)
     },
     collect: monitor => ({
@@ -15,21 +15,17 @@ function Group(props) {
     }),
   }), [])
 
-  const members = props.members;
-
   return (
     <div
       ref={drop}
       style={{
         position: 'relative',
-        backgroundColor: props.color,
-        opacity: props.selected ? 0.3 : 1,
+        backgroundColor: color,
         width: 100,
         height: 100,
       }}
     >
-      teamname: {props.title}
-      {props.selected}
+      teamname: {title}
       {members && members.map((user) => (
         <Member
           key={user.id}
