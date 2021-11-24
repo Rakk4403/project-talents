@@ -16,7 +16,7 @@ function App({data}) {
           const members = Object.values(data).filter((elem) => elem.parent === key);
           return (
             <Group
-              // data={data}
+              data={data}
               key={key}
               groupId={key}
               title={value.title}
@@ -26,6 +26,7 @@ function App({data}) {
         })}
         All Members:
         <Group
+          data={data}
           title={'Member Basket'}
           members={Object.values(data)
             .filter((elem) => !elem.parent && elem.type === ItemTypes.Member)}

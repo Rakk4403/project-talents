@@ -3,7 +3,7 @@ import {ItemTypes} from "../data/types";
 import {addElem} from "../data/Data";
 import Member from "./Member";
 
-function Group({ groupId, title, members, color }) {
+function Group({ groupId, title, members, color, data }) {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ItemTypes.Member,
     drop: (item, monitor) => {
@@ -15,6 +15,20 @@ function Group({ groupId, title, members, color }) {
     }),
   }), [])
 
+  let talentsForMembers = [];
+  members.forEach(member => {
+    if (member.children) {
+      talentsForMembers = talentsForMembers.concat(member.children);
+    }
+  })
+  console.log('talentsForMembers', talentsForMembers);
+  const talentCountMap = {};
+  talentsForMembers.forEach(talentId => {
+    if (!talentCountMap[talentId]) {
+      talentCountMap[talentId] = 0
+    }
+    talentCountMap[talentId] += 1;
+  })
   return (
     <div
       ref={drop}
@@ -25,12 +39,17 @@ function Group({ groupId, title, members, color }) {
         height: 100,
       }}
     >
-      teamname: {title}
+      <h4>{title}</h4>
+      <div>
+        {Object.keys(talentCountMap).map(key => <div>{`${data[key].title} : ${talentCountMap[key]}`}</div>)}
+      </div>
       {members && members.map((user) => (
         <Member
           key={user.id}
           title={user.title}
           memberId={user.id}
+          talentIds={user.children}
+          data={data}
         >
         </Member>
       ))}
@@ -47,6 +66,10 @@ function Group({ groupId, title, members, color }) {
       />}
     </div>
   )
+}
+
+Group.defaultProps = {
+  data: {},
 }
 
 export default Group;
