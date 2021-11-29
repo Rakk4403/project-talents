@@ -3,6 +3,7 @@ import Group from "./component/Group";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {ItemTypes} from "./data/types";
+import {addElem} from "./data/Data";
 
 function App({data}) {
   const keys = Object.keys(data);
@@ -40,6 +41,8 @@ function App({data}) {
           })}
         </div>
         <div style={{ backgroundColor: 'aliceblue', width: '20%' }}>
+          <div onClick={() => addElem(ItemTypes.Group)}>Add Group</div>
+          <div onClick={() => addElem(ItemTypes.Member)}>Add Member</div>
         <Group
           data={data}
           title={'Member Basket'}

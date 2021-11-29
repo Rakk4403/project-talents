@@ -53,12 +53,22 @@ const emitChange = () => {
   observer(Data);
 }
 
-export const addElem = (groupId, memberId) => {
+export const appendElem = (groupId, memberId) => {
   const prevGroupId = getParent(memberId);
   removeChild(prevGroupId, memberId);
   addChild(groupId, memberId);
   changeParent(memberId, groupId);
   console.log('Data', Data);
+  emitChange();
+}
+
+export const addElem = (itemType) => {
+  const randomId = (Math.random()+1).toString(36).substring(2, 7);
+  Data[randomId] = {
+    id: randomId,
+    title: `Group-${randomId}`,
+    type: itemType,
+  };
   emitChange();
 }
 
