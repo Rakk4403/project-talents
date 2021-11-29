@@ -1,5 +1,6 @@
-import {useDrag} from "react-dnd";
+import {useDrag, useDrop} from "react-dnd";
 import {ItemTypes} from "../data/types";
+import {appendElem} from "../data/Data";
 
 function Member({ memberId, title, talentIds, data }) {
   const [{isDragging}, drag] = useDrag(() => ({
@@ -10,8 +11,19 @@ function Member({ memberId, title, talentIds, data }) {
     })
   }))
 
+  const [{ isOver }, drop] = useDrop(() => ({
+    accept: ItemTypes.Talent,
+    drop: (item) => {
+      appendElem(memberId, item.talentName)
+    },
+    collect: monitor => ({
+      isOver: !!monitor.isOver(),
+    }),
+  }), [])
+
   const talents = Object.values(data).filter((elem) => talentIds.includes(elem.id));
   return (
+    <div ref={drop} style={{ position: 'relative'}}>
     <div
       ref={drag}
       style={{
@@ -21,6 +33,18 @@ function Member({ memberId, title, talentIds, data }) {
       }}>
       {title}
       {talents.map((talent) => <div>{talent.title}</div>)}
+    </div>
+      {isOver && <div
+        style={{
+          position:'absolute',
+          top: 0,
+          left: 0,
+          width:'100%',
+          height:'100%',
+          backgroundColor: 'black',
+          opacity: 0.5,
+        }}
+      />}
     </div>
   )
 }

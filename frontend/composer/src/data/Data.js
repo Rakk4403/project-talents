@@ -64,10 +64,17 @@ export const appendElem = (groupId, memberId) => {
 
 export const addElem = (itemType) => {
   const randomId = (Math.random()+1).toString(36).substring(2, 7);
+  let prefix = 'Group';
+  if (itemType === ItemTypes.Member) {
+    prefix = 'Member';
+  } else if (itemType === ItemTypes.Talent) {
+    prefix = 'Talent';
+  }
   Data[randomId] = {
     id: randomId,
-    title: `Group-${randomId}`,
+    title: `${prefix}-${randomId}`,
     type: itemType,
+    children: [],
   };
   emitChange();
 }
