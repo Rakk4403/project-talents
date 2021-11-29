@@ -70,6 +70,7 @@ function Group({ groupId, title, members, color, data }) {
 
 Group.defaultProps = {
   data: {},
+  members: [],
 }
 
 export default Group;

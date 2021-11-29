@@ -4,6 +4,7 @@ import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {ItemTypes} from "./data/types";
 import {addElem} from "./data/Data";
+import WasteBox from "./component/WasteBox";
 
 function App({data}) {
   const keys = Object.keys(data);
@@ -50,6 +51,9 @@ function App({data}) {
             .filter((elem) => !elem.parent && elem.type === ItemTypes.Member)}
           />
         </div>
+        <WasteBox
+          data={data}
+          />
       </div>
     </DndProvider>
   );

@@ -72,6 +72,10 @@ export const addElem = (itemType) => {
   emitChange();
 }
 
+export const deleteElem = (elemId) => {
+  delete Data[elemId];
+  emitChange();
+}
 export const observe = (o) => {
   observer = o;
   emitChange();
