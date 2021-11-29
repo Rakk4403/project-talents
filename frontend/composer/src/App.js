@@ -10,28 +10,43 @@ function App({data}) {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="App">
-        {groupKeys.map((key) => {
-          const value = data[key];
-          const members = Object.values(data).filter((elem) => elem.parent === key);
-          return (
-            <Group
-              data={data}
-              key={key}
-              groupId={key}
-              title={value.title}
-              members={members}
-            />
-          )
-        })}
-        All Members:
+      <div className="App" style={{ width: '100%', display: 'flex' }}>
+        <div
+          id="playground"
+          style={{
+            display: 'flex',
+            width: '80%',
+          }}
+        >
+          {groupKeys.map((key) => {
+            const value = data[key];
+            const members = Object.values(data).filter((elem) => elem.parent === key);
+            return (
+              <div style={{
+                margin: 10,
+                border: '1px solid gray',
+                borderRadius: 5,
+                alignItems: 'stretch',
+              }}>
+              <Group
+                data={data}
+                key={key}
+                groupId={key}
+                title={value.title}
+                members={members}
+              />
+              </div>
+            )
+          })}
+        </div>
+        <div style={{ backgroundColor: 'aliceblue', width: '20%' }}>
         <Group
           data={data}
           title={'Member Basket'}
           members={Object.values(data)
             .filter((elem) => !elem.parent && elem.type === ItemTypes.Member)}
           />
-
+        </div>
       </div>
     </DndProvider>
   );

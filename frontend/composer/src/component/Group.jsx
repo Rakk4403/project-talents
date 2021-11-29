@@ -36,7 +36,7 @@ function Group({ groupId, title, members, color, data }) {
         position: 'relative',
         backgroundColor: color,
         width: 100,
-        height: 100,
+        minHeight: 300,
       }}
     >
       <h4>{title}</h4>
