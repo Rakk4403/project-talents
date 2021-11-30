@@ -1,6 +1,6 @@
 import {useDrag, useDrop} from "react-dnd";
 import {ItemTypes} from "../data/types";
-import {appendElem} from "../data/Data";
+import {appendTalent} from "../data/Data";
 import ToggleInput from "./ToggleInput";
 
 function Member({memberId, title, talentIds, data}) {
@@ -15,7 +15,7 @@ function Member({memberId, title, talentIds, data}) {
   const [{isOver}, drop] = useDrop(() => ({
     accept: ItemTypes.Talent,
     drop: (item) => {
-      appendElem(memberId, item.talentId)
+      appendTalent(memberId, item.talentId)
     },
     collect: monitor => ({
       isOver: !!monitor.isOver(),

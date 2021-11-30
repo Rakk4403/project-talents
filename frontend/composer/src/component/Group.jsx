@@ -1,6 +1,6 @@
 import {useDrop} from "react-dnd";
 import {ItemTypes} from "../data/types";
-import {appendElem} from "../data/Data";
+import {appendMember} from "../data/Data";
 import Member from "./Member";
 import ToggleInput from "./ToggleInput";
 
@@ -8,7 +8,7 @@ function Group({ groupId, title, members, color, data }) {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ItemTypes.Member,
     drop: (item, monitor) => {
-      appendElem(groupId, item.memberId)
+      appendMember(groupId, item.memberId)
       console.log('dropped', item, monitor)
     },
     collect: monitor => ({

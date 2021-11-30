@@ -56,7 +56,7 @@ const emitChange = () => {
   observer(Data);
 }
 
-export const appendElem = (groupId, memberId) => {
+export const appendMember = (groupId, memberId) => {
   if (groupId && hasChild(groupId, memberId)) {
     return;
   }
@@ -64,7 +64,15 @@ export const appendElem = (groupId, memberId) => {
   removeChild(prevGroupId, memberId);
   addChild(groupId, memberId);
   changeParent(memberId, groupId);
-  console.log('Data', Data);
+  emitChange();
+}
+
+export const appendTalent = (memberId, talentId) => {
+  if (memberId && hasChild(memberId, talentId)) {
+    return;
+  }
+  addChild(memberId, talentId);
+  changeParent(talentId, memberId);
   emitChange();
 }
 
