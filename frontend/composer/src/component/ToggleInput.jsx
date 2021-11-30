@@ -12,8 +12,10 @@ function ToggleInput({value, elemId}) {
           value={newTitle}
           onKeyDown={(e) => {
             if (e.code === 'Enter') {
-              modifyElemTitle(elemId, newTitle);
-              setClicked(false);
+              if (newTitle) {
+                modifyElemTitle(elemId, newTitle);
+                setClicked(false);
+              }
             } else if (e.code === 'Escape') {
               modifyElemTitle(elemId, value);
               setNewTitle(value);
@@ -21,8 +23,10 @@ function ToggleInput({value, elemId}) {
             }
           }}
           onBlur={() => {
-            modifyElemTitle(elemId, newTitle);
-            setClicked(false);
+            if (newTitle) {
+              modifyElemTitle(elemId, newTitle);
+              setClicked(false);
+            }
           }}
           onChange={(e) => setNewTitle(e.target.value)}
         />
