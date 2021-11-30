@@ -2,6 +2,7 @@ import {useDrop} from "react-dnd";
 import {ItemTypes} from "../data/types";
 import {appendElem} from "../data/Data";
 import Member from "./Member";
+import ToggleInput from "./ToggleInput";
 
 function Group({ groupId, title, members, color, data }) {
   const [{ isOver }, drop] = useDrop(() => ({
@@ -39,7 +40,9 @@ function Group({ groupId, title, members, color, data }) {
         minHeight: 300,
       }}
     >
-      <h4>{title}</h4>
+      <h4>
+        <ToggleInput value={title} elemId={groupId} />
+      </h4>
       <div>
         {Object.keys(talentCountMap).map(key => <div>{`${data[key].title} : ${talentCountMap[key]}`}</div>)}
       </div>
