@@ -4,12 +4,11 @@ import {appendMember} from "../data/Data";
 import Member from "./Member";
 import ToggleInput from "./ToggleInput";
 
-function Group({ groupId, title, members, color, data }) {
+function Group({ groupId, title, members, data }) {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ItemTypes.Member,
-    drop: (item, monitor) => {
+    drop: (item) => {
       appendMember(groupId, item.memberId)
-      console.log('dropped', item, monitor)
     },
     collect: monitor => ({
       isOver: !!monitor.isOver(),
@@ -22,7 +21,6 @@ function Group({ groupId, title, members, color, data }) {
       talentsForMembers = talentsForMembers.concat(member.children);
     }
   })
-  console.log('talentsForMembers', talentsForMembers);
   const talentCountMap = {};
   talentsForMembers.forEach(talentId => {
     if (!talentCountMap[talentId]) {
@@ -35,9 +33,12 @@ function Group({ groupId, title, members, color, data }) {
       ref={drop}
       style={{
         position: 'relative',
-        backgroundColor: color,
-        width: 100,
-        minHeight: 300,
+        margin: 5,
+        width: 200,
+        height: 300,
+        maxHeight: 500,
+        border: '1px solid gray',
+        borderRadius: 5,
       }}
     >
       <h4>
@@ -46,6 +47,7 @@ function Group({ groupId, title, members, color, data }) {
       <div>
         {Object.keys(talentCountMap).map(key => <div>{`${data[key].title} : ${talentCountMap[key]}`}</div>)}
       </div>
+      <div style={{ overflow: 'scroll' }}>
       {members && members.map((user) => (
         <Member
           key={user.id}
@@ -56,6 +58,7 @@ function Group({ groupId, title, members, color, data }) {
         >
         </Member>
       ))}
+      </div>
       {isOver && <div
         style={{
           position:'absolute',
@@ -64,7 +67,7 @@ function Group({ groupId, title, members, color, data }) {
           width:'100%',
           height:'100%',
           backgroundColor: 'black',
-          opacity: 0.5,
+          opacity: 0.3,
         }}
       />}
     </div>

@@ -25,22 +25,16 @@ function App({data}) {
             const value = data[key];
             const members = Object.values(data).filter((elem) => elem.parent === key);
             return (
-              <div
-                key={key}
-                style={{
-                  margin: 10,
-                  border: '1px solid gray',
-                  borderRadius: 5,
-                  alignItems: 'stretch',
-                }}>
+
                 <Group
+
                   data={data}
                   key={key}
                   groupId={key}
                   title={value.title}
                   members={members}
                 />
-              </div>
+
             )
           })}
         </div>
