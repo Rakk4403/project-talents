@@ -3,7 +3,7 @@ import Group from "./component/Group";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {ItemTypes} from "./data/types";
-import {addElem} from "./data/Data";
+import {addElem, reset} from "./data/Data";
 import WasteBox from "./component/WasteBox";
 import Talent from "./component/Talent";
 
@@ -48,6 +48,7 @@ function App({data}) {
           <div onClick={() => addElem(ItemTypes.Group)}>Add Group</div>
           <div onClick={() => addElem(ItemTypes.Member)}>Add Member</div>
           <div onClick={() => addElem(ItemTypes.Talent)}>Add Talent</div>
+          <div onClick={() => reset()}>Reset</div>
         <Group
           data={data}
           title={'Member Basket'}

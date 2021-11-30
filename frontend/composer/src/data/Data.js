@@ -53,6 +53,7 @@ const getParent = (elemId) => {
 let observer = null;
 
 const emitChange = () => {
+  console.log('Data', Data);
   observer(Data);
 }
 
@@ -109,6 +110,16 @@ export const deleteElem = (elemId) => {
 
 export const modifyElemTitle = (elemId, title) => {
   Data[elemId].title = title;
+  emitChange();
+}
+
+export const reset = () => {
+  Object.keys(Data).forEach((key) => {
+    if (Data[key].type === ItemTypes.Group) {
+      Data[key].children = [];
+    }
+    Data[key].parent = null;
+  })
   emitChange();
 }
 
