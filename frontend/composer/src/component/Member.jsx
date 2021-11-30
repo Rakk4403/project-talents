@@ -24,16 +24,26 @@ function Member({memberId, title, talentIds, data}) {
 
   const talents = Object.values(data).filter((elem) => talentIds.includes(elem.id));
   return (
-    <div ref={drop} style={{position: 'relative'}}>
+    <div
+      ref={drop}
+      style={{
+        position: 'relative',
+        borderRadius: 10,
+        padding: 5,
+        margin: 5,
+        backgroundColor: 'lightgray',
+        width: 100,
+        opacity: isDragging ? 0.3 : 1,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'start',
+      }}
+    >
       <div
         ref={drag}
         style={{
-          opacity: isDragging ? 0.3 : 1,
-          backgroundColor: 'lightgray',
-          width: 100,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'start',
+          width: '100%',
+          height: '100%',
         }}>
         <ToggleInput value={title} elemId={memberId} />
         {talents.map((talent) => <div key={talent.id}>{talent.title}</div>)}

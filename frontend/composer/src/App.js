@@ -13,7 +13,7 @@ function App({data}) {
   const talentKeys = keys.filter((key) => data[key].type === ItemTypes.Talent);
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="App" style={{ width: '100%', display: 'flex' }}>
+      <div className="App" style={{width: '100%', display: 'flex'}}>
         <div
           id="playground"
           style={{
@@ -28,43 +28,45 @@ function App({data}) {
               <div
                 key={key}
                 style={{
-                margin: 10,
-                border: '1px solid gray',
-                borderRadius: 5,
-                alignItems: 'stretch',
-              }}>
-              <Group
-                data={data}
-                key={key}
-                groupId={key}
-                title={value.title}
-                members={members}
-              />
+                  margin: 10,
+                  border: '1px solid gray',
+                  borderRadius: 5,
+                  alignItems: 'stretch',
+                }}>
+                <Group
+                  data={data}
+                  key={key}
+                  groupId={key}
+                  title={value.title}
+                  members={members}
+                />
               </div>
             )
           })}
         </div>
-        <div style={{ backgroundColor: 'aliceblue', width: '20%' }}>
+        <div style={{backgroundColor: 'aliceblue', width: '20%'}}>
           <div onClick={() => addElem(ItemTypes.Group)}>Add Group</div>
           <div onClick={() => addElem(ItemTypes.Member)}>Add Member</div>
           <div onClick={() => addElem(ItemTypes.Talent)}>Add Talent</div>
           <div onClick={() => reset()}>Reset</div>
-        <Group
-          data={data}
-          title={'Member Basket'}
-          members={Object.values(data)
-            .filter((elem) => !elem.parent && elem.type === ItemTypes.Member)}
+          <Group
+            data={data}
+            title={'Member Basket'}
+            members={Object.values(data)
+              .filter((elem) => !elem.parent && elem.type === ItemTypes.Member)}
           />
-          {talentKeys.map((key) =>
-            <Talent
-              key={key}
-              title={data[key].title}
-              talentId={key}
-            />)}
+          <div style={{display: 'flex', flexWrap: 'wrap'}}>
+            {talentKeys.map((key) =>
+              <Talent
+                key={key}
+                title={data[key].title}
+                talentId={key}
+              />)}
+          </div>
         </div>
         <WasteBox
           data={data}
-          />
+        />
       </div>
     </DndProvider>
   );

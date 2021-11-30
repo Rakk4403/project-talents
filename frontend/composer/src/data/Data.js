@@ -12,7 +12,6 @@ const Data = {
   't2': { id: 't2', title: 'talent3', type:ItemTypes.Talent },
 };
 
-
 const changeParent = (elemId, newParentId) => {
   if (Data[elemId]) {
     Data[elemId].parent = newParentId;
@@ -121,6 +120,11 @@ export const reset = () => {
     Data[key].parent = null;
   })
   emitChange();
+}
+
+export const generateRandomColor = () => {
+  function r() { return Math.floor(Math.random() * 255) }
+  return 'rgb(' + r() + "," + r() + "," + r() + ')';
 }
 
 export const observe = (o) => {
