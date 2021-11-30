@@ -14,7 +14,7 @@ function Member({ memberId, title, talentIds, data }) {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ItemTypes.Talent,
     drop: (item) => {
-      appendElem(memberId, item.talentName)
+      appendElem(memberId, item.talentId)
     },
     collect: monitor => ({
       isOver: !!monitor.isOver(),

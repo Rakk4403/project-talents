@@ -1,10 +1,10 @@
 import {useDrag} from "react-dnd";
 import {ItemTypes} from "../data/types";
 
-function Talent({ title }) {
+function Talent({ title, talentId }) {
   const [{isDragging}, drag] = useDrag(() => ({
     type: ItemTypes.Talent,
-    item: {talentName: title},
+    item: {talentId: talentId},
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging()
     })

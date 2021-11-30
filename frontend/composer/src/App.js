@@ -52,7 +52,12 @@ function App({data}) {
           members={Object.values(data)
             .filter((elem) => !elem.parent && elem.type === ItemTypes.Member)}
           />
-          {talentKeys.map((key) => <Talent title={data[key].title} />)}
+          {talentKeys.map((key) =>
+            <Talent
+              key={key}
+              title={data[key].title}
+              talentId={key}
+            />)}
         </div>
         <WasteBox
           data={data}

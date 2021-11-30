@@ -24,6 +24,9 @@ const changeParent = (elemId, newParentId) => {
   }
 }
 
+const hasChild = (elemId, childId) => {
+  return Data[elemId].children.includes(childId);
+}
 const addChild = (elemId, newChildId) => {
   if (Data[elemId] && Data[elemId].children) {
     Data[elemId].children.push(newChildId);
@@ -54,6 +57,9 @@ const emitChange = () => {
 }
 
 export const appendElem = (groupId, memberId) => {
+  if (hasChild(groupId, memberId)) {
+    return;
+  }
   const prevGroupId = getParent(memberId);
   removeChild(prevGroupId, memberId);
   addChild(groupId, memberId);
