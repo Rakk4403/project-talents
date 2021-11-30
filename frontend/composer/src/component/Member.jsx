@@ -32,7 +32,7 @@ function Member({ memberId, title, talentIds, data }) {
         width: 100,
       }}>
       {title}
-      {talents.map((talent) => <div>{talent.title}</div>)}
+      {talents.map((talent) => <div key={talent.id}>{talent.title}</div>)}
     </div>
       {isOver && <div
         style={{

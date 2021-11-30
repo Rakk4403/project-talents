@@ -25,7 +25,9 @@ function App({data}) {
             const value = data[key];
             const members = Object.values(data).filter((elem) => elem.parent === key);
             return (
-              <div style={{
+              <div
+                key={key}
+                style={{
                 margin: 10,
                 border: '1px solid gray',
                 borderRadius: 5,

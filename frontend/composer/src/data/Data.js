@@ -57,7 +57,7 @@ const emitChange = () => {
 }
 
 export const appendElem = (groupId, memberId) => {
-  if (hasChild(groupId, memberId)) {
+  if (groupId && hasChild(groupId, memberId)) {
     return;
   }
   const prevGroupId = getParent(memberId);
@@ -89,6 +89,12 @@ export const deleteElem = (elemId) => {
   delete Data[elemId];
   emitChange();
 }
+
+export const modifyElemTitle = (elemId, title) => {
+  Data[elemId].title = title;
+  emitChange();
+}
+
 export const observe = (o) => {
   observer = o;
   emitChange();
