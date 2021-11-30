@@ -31,6 +31,9 @@ function Member({memberId, title, talentIds, data}) {
           opacity: isDragging ? 0.3 : 1,
           backgroundColor: 'lightgray',
           width: 100,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'start',
         }}>
         <ToggleInput value={title} elemId={memberId} />
         {talents.map((talent) => <div key={talent.id}>{talent.title}</div>)}

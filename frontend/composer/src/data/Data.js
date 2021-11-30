@@ -85,7 +85,16 @@ export const addElem = (itemType) => {
   emitChange();
 }
 
+const deleteElemFromAllChildren = (elemId) => {
+  Object.keys(Data).forEach((key) => {
+    if (Data[key].children && Data[key].children.includes(elemId)) {
+      Data[key].children.splice(elemId, 1);
+    }
+  })
+}
+
 export const deleteElem = (elemId) => {
+  deleteElemFromAllChildren(elemId)
   delete Data[elemId];
   emitChange();
 }
