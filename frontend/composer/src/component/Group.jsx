@@ -32,6 +32,8 @@ function Group({groupId, title, members, data}) {
     <div
       ref={drop}
       style={{
+        display: 'flex',
+        flexFlow: 'column',
         position: 'relative',
         margin: 5,
         width: 200,
