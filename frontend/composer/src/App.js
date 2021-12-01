@@ -25,16 +25,13 @@ function App({data}) {
             const value = data[key];
             const members = Object.values(data).filter((elem) => elem.parent === key);
             return (
-
-                <Group
-
-                  data={data}
-                  key={key}
-                  groupId={key}
-                  title={value.title}
-                  members={members}
-                />
-
+              <Group
+                data={data}
+                key={key}
+                groupId={key}
+                title={value.title}
+                members={members}
+              />
             )
           })}
         </div>
@@ -54,6 +51,7 @@ function App({data}) {
               <Talent
                 key={key}
                 title={data[key].title}
+                color={data[key].color}
                 talentId={key}
               />)}
           </div>
