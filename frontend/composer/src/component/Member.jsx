@@ -32,7 +32,6 @@ function Member({memberId, title, talentIds, data}) {
         padding: 5,
         margin: 5,
         backgroundColor: 'lightgray',
-        width: 100,
         opacity: isDragging ? 0.3 : 1,
         display: 'flex',
         flexDirection: 'column',
@@ -44,9 +43,14 @@ function Member({memberId, title, talentIds, data}) {
         style={{
           width: '100%',
           height: '100%',
+          display: 'flex',
+          alignItems: 'start',
+          justifyContent: 'space-between',
         }}>
-        <ToggleInput value={title} elemId={memberId} />
-        {talents.map((talent) => <div key={talent.id}>{talent.title}</div>)}
+        <ToggleInput value={title} elemId={memberId}/>
+        <div>
+          {talents.map((talent) => <div key={talent.id}>{talent.title}</div>)}
+        </div>
       </div>
       {isOver && <div
         style={{

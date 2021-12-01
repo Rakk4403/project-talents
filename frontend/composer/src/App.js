@@ -13,11 +13,12 @@ function App({data}) {
   const talentKeys = keys.filter((key) => data[key].type === ItemTypes.Talent);
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="App" style={{width: '100%', display: 'flex'}}>
+      <div className="App" style={{width: '100%', height: '100%', display: 'flex'}}>
         <div
           id="playground"
           style={{
             display: 'flex',
+            flexWrap: 'wrap',
             width: '80%',
           }}
         >
@@ -35,17 +36,28 @@ function App({data}) {
             )
           })}
         </div>
-        <div style={{backgroundColor: 'aliceblue', width: '20%'}}>
-          <div onClick={() => addElem(ItemTypes.Group)}>Add Group</div>
-          <div onClick={() => addElem(ItemTypes.Member)}>Add Member</div>
-          <div onClick={() => addElem(ItemTypes.Talent)}>Add Talent</div>
-          <div onClick={() => reset()}>Reset</div>
-          <Group
-            data={data}
-            title={'Member Basket'}
-            members={Object.values(data)
-              .filter((elem) => !elem.parent && elem.type === ItemTypes.Member)}
-          />
+        <div style={{
+          display: 'flex',
+          flexFlow: 'column',
+          backgroundColor: 'aliceblue',
+          width: '20%',
+        }}>
+          <div style={{display: 'flex'}}>
+            <button onClick={() => addElem(ItemTypes.Group)}>Add Group</button>
+            <button onClick={() => addElem(ItemTypes.Member)}>Add Member</button>
+            <button onClick={() => addElem(ItemTypes.Talent)}>Add Talent</button>
+            <button onClick={() => reset()}>Reset</button>
+          </div>
+          <div style={{display: 'flex', height: '50%'}}>
+            <Group
+              disableShowTalent
+              style={{height: '100%', width: '100%'}}
+              data={data}
+              title={'Member Basket'}
+              members={Object.values(data)
+                .filter((elem) => !elem.parent && elem.type === ItemTypes.Member)}
+            />
+          </div>
           <div style={{display: 'flex', flexWrap: 'wrap'}}>
             {talentKeys.map((key) =>
               <Talent

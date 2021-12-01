@@ -4,7 +4,7 @@ import {appendMember} from "../data/Data";
 import Member from "./Member";
 import ToggleInput from "./ToggleInput";
 
-function Group({groupId, title, members, data}) {
+function Group({groupId, title, members, data, disableShowTalent}) {
   const [{isOver}, drop] = useDrop(() => ({
     accept: [ItemTypes.Member, ItemTypes.Group],
     drop: (item) => {
@@ -46,9 +46,11 @@ function Group({groupId, title, members, data}) {
       <div style={{fontWeight: 'bold'}}>
         <ToggleInput value={title} elemId={groupId}/>
       </div>
+      {!disableShowTalent &&
       <div>
         {Object.keys(talentCountMap).map(key => <div>{`${data[key].title} : ${talentCountMap[key]}`}</div>)}
       </div>
+      }
       <div style={{overflow: 'auto'}}>
         {members && members.map((user) => (
           <Member
