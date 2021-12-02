@@ -1,4 +1,4 @@
-import {useDrop} from "react-dnd";
+import {useDrag, useDrop} from "react-dnd";
 import {ItemTypes} from "../data/types";
 import {appendMember} from "../data/Data";
 import Member from "./Member";
@@ -6,7 +6,7 @@ import ToggleInput from "./ToggleInput";
 
 function Group({groupId, title, members, data, disableShowTalent}) {
   const [{isOver}, drop] = useDrop(() => ({
-    accept: [ItemTypes.Member, ItemTypes.Group],
+    accept: [ItemTypes.Member],
     drop: (item) => {
       appendMember(groupId, item.groupId || item.memberId)
     },
@@ -14,6 +14,14 @@ function Group({groupId, title, members, data, disableShowTalent}) {
       isOver: !!monitor.isOver(),
     }),
   }), [])
+
+  const [{isDragging}, drag] = useDrag(() => ({
+    type: ItemTypes.Group,
+    item: {groupId: groupId},
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging()
+    })
+  }))
 
   let talentsForMembers = [];
   members.forEach(member => {
@@ -43,25 +51,27 @@ function Group({groupId, title, members, data, disableShowTalent}) {
         borderRadius: 5,
       }}
     >
-      <div style={{fontWeight: 'bold'}}>
-        <ToggleInput value={title} elemId={groupId}/>
-      </div>
-      {!disableShowTalent &&
-      <div>
-        {Object.keys(talentCountMap).map(key => <div>{`${data[key].title} : ${talentCountMap[key]}`}</div>)}
-      </div>
-      }
-      <div style={{overflow: 'auto'}}>
-        {members && members.map((user) => (
-          <Member
-            key={user.id}
-            title={user.title}
-            memberId={user.id}
-            talentIds={user.children}
-            data={data}
-          >
-          </Member>
-        ))}
+      <div ref={drag} style={{height: '100%'}}>
+        <div style={{fontWeight: 'bold'}}>
+          <ToggleInput value={title} elemId={groupId}/>
+        </div>
+        {!disableShowTalent &&
+        <div>
+          {Object.keys(talentCountMap).map(key => <div>{`${data[key].title} : ${talentCountMap[key]}`}</div>)}
+        </div>
+        }
+        <div style={{overflow: 'auto'}}>
+          {members && members.map((user) => (
+            <Member
+              key={user.id}
+              title={user.title}
+              memberId={user.id}
+              talentIds={user.children}
+              data={data}
+            >
+            </Member>
+          ))}
+        </div>
       </div>
       {isOver && <div
         style={{
