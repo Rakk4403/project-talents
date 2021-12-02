@@ -3,6 +3,7 @@ import {ItemTypes} from "../data/types";
 import {appendMember} from "../data/Data";
 import Member from "./Member";
 import ToggleInput from "./ToggleInput";
+import Circle from "./Circle";
 
 function Group({groupId, title, members, data, disableShowTalent}) {
   const [{isOver}, drop] = useDrop(() => ({
@@ -56,8 +57,11 @@ function Group({groupId, title, members, data, disableShowTalent}) {
           <ToggleInput value={title} elemId={groupId}/>
         </div>
         {!disableShowTalent &&
-        <div>
-          {Object.keys(talentCountMap).map(key => <div>{`${data[key].title} : ${talentCountMap[key]}`}</div>)}
+        <div style={{display: 'flex'}}>
+          {Object.keys(talentCountMap).map(key =>
+            <div>
+              <Circle size={talentCountMap[key] * 20} color={data[key].color}/>
+            </div>)}
         </div>
         }
         <div style={{overflow: 'auto'}}>

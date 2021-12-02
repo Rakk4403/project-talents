@@ -2,6 +2,7 @@ import {useDrag, useDrop} from "react-dnd";
 import {ItemTypes} from "../data/types";
 import {appendTalent} from "../data/Data";
 import ToggleInput from "./ToggleInput";
+import Circle from "./Circle";
 
 function Member({memberId, title, talentIds, data}) {
   const [{isDragging}, drag] = useDrag(() => ({
@@ -48,8 +49,11 @@ function Member({memberId, title, talentIds, data}) {
           justifyContent: 'space-between',
         }}>
         <ToggleInput value={title} elemId={memberId}/>
-        <div>
-          {talents.map((talent) => <div key={talent.id}>{talent.title}</div>)}
+        <div style={{display: 'flex'}}>
+          {talents.map((talent) =>
+            <div key={talent.id}>
+              <Circle color={talent.color}/>
+            </div>)}
         </div>
       </div>
       {isOver && <div
