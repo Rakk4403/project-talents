@@ -45,13 +45,13 @@ function Member({memberId, title, talentIds, data}) {
           width: '100%',
           height: '100%',
           display: 'flex',
-          alignItems: 'start',
+          alignItems: 'center',
           justifyContent: 'space-between',
         }}>
         <ToggleInput value={title} elemId={memberId}/>
         <div style={{display: 'flex'}}>
           {talents.map((talent) =>
-            <div key={talent.id}>
+            <div key={talent.id} style={{padding: 2}}>
               <Circle color={talent.color}/>
             </div>)}
         </div>

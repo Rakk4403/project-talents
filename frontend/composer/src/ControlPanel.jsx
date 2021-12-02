@@ -11,42 +11,55 @@ function ControlPanel({data}) {
   return (
     <Draggable handle=".panelHandle">
       <div style={{
-        display: 'flex',
-        flexFlow: 'column',
+        border: 'solid',
+        borderColor: 'lightgray',
+        borderRadius: 5,
+        borderWidth: 1,
         backgroundColor: 'aliceblue',
         width: '20%',
         height: 800,
       }}>
-        <strong className="panelHandle">
-          <div>Handle</div>
-        </strong>
-        <WasteBox
-          data={data}
-        />
-        <div style={{display: 'flex'}}>
-          <button onClick={() => addElem(ItemTypes.Group)}>Add Group</button>
-          <button onClick={() => addElem(ItemTypes.Member)}>Add Member</button>
-          <button onClick={() => addElem(ItemTypes.Talent)}>Add Talent</button>
-          <button onClick={() => reset()}>Reset</button>
+        <div style={{backgroundColor: 'gray'}}>
+          <strong className="panelHandle">
+            <div>Handle</div>
+          </strong>
         </div>
-        <div style={{display: 'flex', height: '50%'}}>
-          <Group
-            disableShowTalent
-            style={{height: '100%', width: '100%'}}
-            data={data}
-            title={'Member Basket'}
-            members={Object.values(data)
-              .filter((elem) => !elem.parent && elem.type === ItemTypes.Member)}
-          />
-        </div>
-        <div style={{display: 'flex', flexWrap: 'wrap'}}>
-          {talentKeys.map((key) =>
-            <Talent
-              key={key}
-              title={data[key].title}
-              color={data[key].color}
-              talentId={key}
-            />)}
+        <div style={{
+          margin: 10, display: 'flex',
+          flexFlow: 'column',
+          height: '100%',
+        }}>
+          <div style={{
+            padding: 10, display: 'flex', justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+            <WasteBox data={data}/>
+          </div>
+          <div style={{display: 'flex', justifyContent: 'space-between'}}>
+            <button onClick={() => addElem(ItemTypes.Group)}>Add Group</button>
+            <button onClick={() => addElem(ItemTypes.Member)}>Add Member</button>
+            <button onClick={() => addElem(ItemTypes.Talent)}>Add Talent</button>
+            <button onClick={() => reset()}>Reset</button>
+          </div>
+          <div style={{display: 'flex', height: '50%', marginTop: 10}}>
+            <Group
+              disableShowTalent
+              style={{height: '100%', width: '100%'}}
+              data={data}
+              title={'Member Basket'}
+              members={Object.values(data)
+                .filter((elem) => !elem.parent && elem.type === ItemTypes.Member)}
+            />
+          </div>
+          <div style={{display: 'flex', flexWrap: 'wrap', marginTop: 10}}>
+            {talentKeys.map((key) =>
+              <Talent
+                key={key}
+                title={data[key].title}
+                color={data[key].color}
+                talentId={key}
+              />)}
+          </div>
         </div>
       </div>
     </Draggable>

@@ -11,7 +11,6 @@ function Talent({title, talentId, color}) {
     })
   }))
 
-
   return (
     <div
       ref={drag}
@@ -19,11 +18,18 @@ function Talent({title, talentId, color}) {
         opacity: isDragging ? 0.3 : 1,
         padding: 10,
         margin: 3,
-        borderRadius: 20,
-        backgroundColor: color,
+        border: 'solid 3px',
+        borderRadius: 10,
+        color: color,
+        width: 30,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
       }}
     >
-      <ToggleInput elemId={talentId} value={title}/>
+      <div style={{color: 'black'}}>
+        <ToggleInput elemId={talentId} value={title}/>
+      </div>
     </div>
   );
 }

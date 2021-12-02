@@ -5,7 +5,7 @@ import Member from "./Member";
 import ToggleInput from "./ToggleInput";
 import Circle from "./Circle";
 
-function Group({groupId, title, members, data, disableShowTalent}) {
+function Group({groupId, title, members, data, disableShowTalent, style}) {
   const [{isOver}, drop] = useDrop(() => ({
     accept: [ItemTypes.Member],
     drop: (item) => {
@@ -44,20 +44,20 @@ function Group({groupId, title, members, data, disableShowTalent}) {
         display: 'flex',
         flexFlow: 'column',
         position: 'relative',
-        margin: 5,
         width: 200,
         height: 300,
         maxHeight: 500,
         border: '1px solid gray',
         borderRadius: 5,
+        ...style,
       }}
     >
       <div ref={drag} style={{height: '100%', display: 'flex', flexFlow: 'column'}}>
-        <div style={{fontWeight: 'bold'}}>
+        <div style={{fontWeight: 'bold', padding: 5}}>
           <ToggleInput value={title} elemId={groupId}/>
         </div>
         {!disableShowTalent &&
-        <div style={{display: 'flex'}}>
+        <div style={{display: 'flex', padding: 10}}>
           {Object.keys(talentCountMap)
             .sort((a, b) => talentCountMap[a] < talentCountMap[b])
             .map(key =>
@@ -70,16 +70,18 @@ function Group({groupId, title, members, data, disableShowTalent}) {
               </div>)}
         </div>
         }
-        <div style={{overflow: 'auto'}}>
+        <div style={{overflow: 'auto', padding: 5}}>
           {members && members.map((user) => (
-            <Member
-              key={user.id}
-              title={user.title}
-              memberId={user.id}
-              talentIds={user.children}
-              data={data}
-            >
-            </Member>
+            <div style={{paddingRight: 5, paddingLeft: 5}}>
+              <Member
+                key={user.id}
+                title={user.title}
+                memberId={user.id}
+                talentIds={user.children}
+                data={data}
+              >
+              </Member>
+            </div>
           ))}
         </div>
       </div>
