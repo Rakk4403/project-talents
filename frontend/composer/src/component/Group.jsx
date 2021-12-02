@@ -51,7 +51,7 @@ function Group({groupId, title, members, data, disableShowTalent}) {
         borderRadius: 5,
       }}
     >
-      <div ref={drag} style={{height: '100%'}}>
+      <div ref={drag} style={{height: '100%', display: 'flex', flexFlow: 'column'}}>
         <div style={{fontWeight: 'bold'}}>
           <ToggleInput value={title} elemId={groupId}/>
         </div>
