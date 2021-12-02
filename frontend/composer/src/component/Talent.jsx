@@ -1,9 +1,8 @@
 import {useDrag} from "react-dnd";
 import {ItemTypes} from "../data/types";
 import ToggleInput from "./ToggleInput";
-import {generateRandomColor} from "../data/Data";
 
-function Talent({ title, talentId }) {
+function Talent({title, talentId, color}) {
   const [{isDragging}, drag] = useDrag(() => ({
     type: ItemTypes.Talent,
     item: {talentId: talentId},
@@ -21,10 +20,10 @@ function Talent({ title, talentId }) {
         padding: 10,
         margin: 3,
         borderRadius: 20,
-        backgroundColor: generateRandomColor(),
+        backgroundColor: color,
       }}
     >
-     <ToggleInput elemId={talentId} value={title} />
+      <ToggleInput elemId={talentId} value={title}/>
     </div>
   );
 }

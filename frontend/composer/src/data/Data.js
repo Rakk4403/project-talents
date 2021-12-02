@@ -1,16 +1,25 @@
 import {ItemTypes} from "./types";
 
+export const generateRandomColor = () => {
+  function r() {
+    return Math.floor(Math.random() * 255)
+  }
+
+  return 'rgb(' + r() + "," + r() + "," + r() + ')';
+}
+
 const Data = {
-  'g0': { id: 'g0', parent: null, children: [], title: 'group1', type: ItemTypes.Group },
-  'g1': { id: 'g1',  parent: null, children: [], title: 'group2', type: ItemTypes.Group },
-  'g2': { id: 'g2',  parent: null, children: [], title: 'group3', type: ItemTypes.Group },
-  'm0': { id: 'm0',  parent: null, children: ['t0', 't1', 't2'], title: 'member1', type: ItemTypes.Member },
-  'm1': { id: 'm1',  parent: null, children: ['t1', 't2'], title: 'member2', type: ItemTypes.Member },
-  'm2': { id: 'm2',  parent: null, children: ['t2'], title: 'member3', type: ItemTypes.Member },
-  't0': { id: 't0', title: 'talent1', type:ItemTypes.Talent },
-  't1': { id: 't1', title: 'talent2', type:ItemTypes.Talent },
-  't2': { id: 't2', title: 'talent3', type:ItemTypes.Talent },
+  'g0': {id: 'g0', parent: null, children: [], title: 'group1', type: ItemTypes.Group},
+  'g1': {id: 'g1', parent: null, children: [], title: 'group2', type: ItemTypes.Group},
+  'g2': {id: 'g2', parent: null, children: [], title: 'group3', type: ItemTypes.Group},
+  'm0': {id: 'm0', parent: null, children: ['t0', 't1', 't2'], title: 'member1', type: ItemTypes.Member},
+  'm1': {id: 'm1', parent: null, children: ['t1', 't2'], title: 'member2', type: ItemTypes.Member},
+  'm2': {id: 'm2', parent: null, children: ['t2'], title: 'member3', type: ItemTypes.Member},
+  't0': {id: 't0', title: 'talent1', type: ItemTypes.Talent},
+  't1': {id: 't1', title: 'talent2', type: ItemTypes.Talent},
+  't2': {id: 't2', title: 'talent3', type: ItemTypes.Talent},
 };
+Object.keys(Data).forEach((key) => Data[key].color = generateRandomColor());
 
 const changeParent = (elemId, newParentId) => {
   if (Data[elemId]) {
@@ -21,6 +30,10 @@ const changeParent = (elemId, newParentId) => {
       parent: newParentId,
     };
   }
+}
+
+const generateRandomId = () => {
+  return (Math.random() + 1).toString(36).substring(2, 7);
 }
 
 const hasChild = (elemId, childId) => {
@@ -77,7 +90,7 @@ export const appendTalent = (memberId, talentId) => {
 }
 
 export const addElem = (itemType) => {
-  const randomId = (Math.random()+1).toString(36).substring(2, 7);
+  const randomId = generateRandomId();
   let prefix = 'Group';
   if (itemType === ItemTypes.Member) {
     prefix = 'Member';
@@ -89,6 +102,7 @@ export const addElem = (itemType) => {
     title: `${prefix}-${randomId}`,
     type: itemType,
     children: [],
+    color: generateRandomColor(),
   };
   emitChange();
 }
@@ -122,10 +136,6 @@ export const reset = () => {
   emitChange();
 }
 
-export const generateRandomColor = () => {
-  function r() { return Math.floor(Math.random() * 255) }
-  return 'rgb(' + r() + "," + r() + "," + r() + ')';
-}
 
 export const observe = (o) => {
   observer = o;
