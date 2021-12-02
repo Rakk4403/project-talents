@@ -58,10 +58,16 @@ function Group({groupId, title, members, data, disableShowTalent}) {
         </div>
         {!disableShowTalent &&
         <div style={{display: 'flex'}}>
-          {Object.keys(talentCountMap).map(key =>
-            <div>
-              <Circle size={talentCountMap[key] * 20} color={data[key].color}/>
-            </div>)}
+          {Object.keys(talentCountMap)
+            .sort((a, b) => talentCountMap[a] < talentCountMap[b])
+            .map(key =>
+              <div>
+                <Circle
+                  size={talentCountMap[key] * 20}
+                  color={data[key].color}
+                  text={data[key].title}
+                />
+              </div>)}
         </div>
         }
         <div style={{overflow: 'auto'}}>

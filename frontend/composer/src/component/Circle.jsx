@@ -7,9 +7,12 @@ function Circle({color, size = 15, text}) {
         borderRadius: size / 2,
         backgroundColor: color,
         overflow: 'hidden',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
       }}
     >
-      {text}
+      {size > 20 && text}
     </div>)
 }
 
