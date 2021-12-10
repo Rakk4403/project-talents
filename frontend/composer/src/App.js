@@ -18,13 +18,14 @@ function App({data}) {
             display: 'flex',
             flexWrap: 'wrap',
             width: '80%',
+            gap: 5,
           }}
         >
           {groupKeys.map((key) => {
             const value = data[key];
             const members = Object.values(data).filter((elem) => elem.parent === key);
             return (
-              <div style={{margin: 5}}>
+              <div>
                 <Group
                   data={data}
                   key={key}

@@ -18,6 +18,9 @@ function ControlPanel({data}) {
         backgroundColor: 'aliceblue',
         width: '20%',
         height: 800,
+        display: 'flex',
+        flexFlow: 'column',
+        gap: 10,
       }}>
         <div style={{backgroundColor: 'gray'}}>
           <strong className="panelHandle">
@@ -25,12 +28,13 @@ function ControlPanel({data}) {
           </strong>
         </div>
         <div style={{
-          margin: 10, display: 'flex',
+          display: 'flex',
           flexFlow: 'column',
           height: '100%',
+          gap: 10,
         }}>
           <div style={{
-            padding: 10, display: 'flex', justifyContent: 'center',
+            display: 'flex', justifyContent: 'center',
             alignItems: 'center'
           }}>
             <WasteBox data={data}/>
@@ -41,7 +45,7 @@ function ControlPanel({data}) {
             <button onClick={() => addElem(ItemTypes.Talent)}>Add Talent</button>
             <button onClick={() => reset()}>Reset</button>
           </div>
-          <div style={{display: 'flex', height: '50%', marginTop: 10}}>
+          <div style={{display: 'flex', height: '50%'}}>
             <Group
               disableShowTalent
               style={{height: '100%', width: '100%'}}
@@ -51,7 +55,7 @@ function ControlPanel({data}) {
                 .filter((elem) => !elem.parent && elem.type === ItemTypes.Member)}
             />
           </div>
-          <div style={{display: 'flex', flexWrap: 'wrap', marginTop: 10}}>
+          <div style={{display: 'flex', flexWrap: 'wrap'}}>
             {talentKeys.map((key) =>
               <Talent
                 key={key}
