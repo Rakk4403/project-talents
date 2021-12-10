@@ -3,7 +3,7 @@ import {ItemTypes} from "../data/types";
 import {appendMember} from "../data/Data";
 import Member from "./Member";
 import ToggleInput from "./ToggleInput";
-import Circle from "./Circle";
+import BubbleChart from "./BubbleChart";
 
 function Group({groupId, title, members, data, disableShowTalent, style}) {
   const [{isOver}, drop] = useDrop(() => ({
@@ -56,20 +56,14 @@ function Group({groupId, title, members, data, disableShowTalent, style}) {
         <div style={{fontWeight: 'bold', padding: 5}}>
           <ToggleInput value={title} elemId={groupId}/>
         </div>
-        {!disableShowTalent &&
-        <div style={{display: 'flex', padding: 10}}>
-          {Object.keys(talentCountMap)
-            .sort((a, b) => talentCountMap[a] < talentCountMap[b])
-            .map(key =>
-              <div>
-                <Circle
-                  size={talentCountMap[key] * 20}
-                  color={data[key].color}
-                  text={data[key].title}
-                />
-              </div>)}
-        </div>
-        }
+        <BubbleChart
+          useLabels
+          data={Object.keys(talentCountMap)
+            .map((key) => ({
+              v: talentCountMap[key],
+              title: data[key].title,
+            }))}
+        />
         <div style={{overflow: 'auto', padding: 5}}>
           {members && members.map((user) => (
             <div style={{paddingRight: 5, paddingLeft: 5}}>
