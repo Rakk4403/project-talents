@@ -148,8 +148,8 @@ class BubbleChart extends React.Component {
         >
           <circle
             r={this.radiusScale(item.v)}
-            fill={color(item.v)}
-            stroke={d3.rgb(color(item.v)).brighter(2)}
+            fill={item.color}
+            stroke={item.color}
             strokeWidth="2"
           />
           <text

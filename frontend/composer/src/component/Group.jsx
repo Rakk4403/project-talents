@@ -62,6 +62,7 @@ function Group({groupId, title, members, data, disableShowTalent, style}) {
             .map((key) => ({
               v: talentCountMap[key],
               title: data[key].title,
+              color: data[key].color,
             }))}
         />
         <div style={{overflow: 'auto', padding: 5}}>
