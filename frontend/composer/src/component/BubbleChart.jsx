@@ -135,11 +135,11 @@ class BubbleChart extends React.Component {
       );
     }
 
+    const width = (this.ref.current ? this.ref.current.offsetWidth : 0);
+    const height = (this.ref.current ? this.ref.current.offsetHeight : 0);
     // render circle and text elements inside a group
     return data.map((item, index) => {
       const fontSize = this.radiusScale(item.v) / 2;
-      const width = (this.ref.current ? this.ref.current.offsetWidth : 0);
-      const height = (this.ref.current ? this.ref.current.offsetHeight : 0);
       return (
         <g
           key={index}
@@ -151,6 +151,8 @@ class BubbleChart extends React.Component {
             fill={item.color}
             stroke={item.color}
             strokeWidth="2"
+            onMouseOver={() => this.setState({tooltip: item})}
+            onMouseOut={() => this.setState({tooltip: null})}
           />
           <text
             dy="6"
@@ -158,8 +160,12 @@ class BubbleChart extends React.Component {
             textAnchor="middle"
             fontSize={`${fontSize}px`}
             fontWeight="bold"
+            onMouseOver={() => this.setState({tooltip: item})}
+            onMouseOut={() => this.setState({tooltip: null})}
           >
-            {item.title}
+            {this.state.tooltip && this.state.tooltip.title === item.title
+              ? `${item.title} ${this.state.tooltip.v}`
+              : item.title}
           </text>
         </g>
       );
