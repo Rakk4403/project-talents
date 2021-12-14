@@ -69,6 +69,30 @@ const emitChange = () => {
   observer(Data);
 }
 
+export const getMembers = (groupId) => {
+  if (!groupId) {
+    return Object.values(Data)
+      .filter((elem) => !elem.parent)
+      .filter((elem) => elem.type === ItemTypes.Member)
+  }
+  let members = [];
+  if (Data[groupId] && Data[groupId].children) {
+    Data[groupId].children
+      .filter((childId) => Data[childId].type === ItemTypes.Group)
+      .forEach((groupId) => {
+        const m = getMembers(groupId);
+        members = members.concat(m);
+      })
+  }
+
+  const memberIds =
+    Data[groupId] && Data[groupId].children
+      ? Data[groupId].children
+        .filter((memberId) => Data[memberId].type === ItemTypes.Member)
+      : [];
+  return members.concat(Object.values(Data).filter((elem) => memberIds.includes(elem.id)));
+}
+
 export const appendMember = (groupId, memberId) => {
   if (groupId && hasChild(groupId, memberId)) {
     return;

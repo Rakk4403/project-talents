@@ -1,13 +1,14 @@
 import {useDrag, useDrop} from "react-dnd";
 import {ItemTypes} from "../data/types";
-import {appendMember} from "../data/Data";
+import {appendMember, getMembers} from "../data/Data";
 import Member from "./Member";
 import ToggleInput from "./ToggleInput";
 import BubbleChart from "./BubbleChart";
+import MemberedGroup from "./MemberedGroup";
 
-function Group({groupId, title, members, data, disableShowTalent, style}) {
+function Group({groupId, title, data, disableShowTalent, style}) {
   const [{isOver}, drop] = useDrop(() => ({
-    accept: [ItemTypes.Member],
+    accept: [ItemTypes.Member, ItemTypes.Group],
     drop: (item) => {
       appendMember(groupId, item.groupId || item.memberId)
     },
@@ -24,12 +25,22 @@ function Group({groupId, title, members, data, disableShowTalent, style}) {
     })
   }))
 
+  const groupIds = data[groupId]
+    ? data[groupId].children.filter((groupId) => data[groupId].type === ItemTypes.Group)
+    : [];
+  const groups = Object.values(data)
+    .filter((elem) => groupIds.includes(elem.id));
+
+  const members = getMembers(groupId);
+
   let talentsForMembers = [];
-  members.forEach(member => {
-    if (member.children) {
-      talentsForMembers = talentsForMembers.concat(member.children);
-    }
-  })
+  members
+    .filter((member) => member.type === ItemTypes.Member)
+    .forEach(member => {
+      if (member.children) {
+        talentsForMembers = talentsForMembers.concat(member.children);
+      }
+    })
   const talentCountMap = {};
   talentsForMembers.forEach(talentId => {
     if (!talentCountMap[talentId]) {
@@ -65,19 +76,25 @@ function Group({groupId, title, members, data, disableShowTalent, style}) {
               color: data[key].color,
             }))}
         />
-        <div style={{overflow: 'auto', padding: 5}}>
-          {members && members.map((user) => (
-            <div style={{paddingRight: 5, paddingLeft: 5}}>
-              <Member
-                key={user.id}
-                title={user.title}
-                memberId={user.id}
-                talentIds={user.children}
-                data={data}
-              >
-              </Member>
-            </div>
+        <div>
+          {groups.map((group) => (
+            <MemberedGroup title={group.title}/>
           ))}
+        </div>
+        <div style={{overflow: 'auto', padding: 5}}>
+          {members && members
+            .map((user) => (
+              <div style={{paddingRight: 5, paddingLeft: 5}}>
+                <Member
+                  key={user.id}
+                  title={user.title}
+                  memberId={user.id}
+                  talentIds={user.children}
+                  data={data}
+                >
+                </Member>
+              </div>
+            ))}
         </div>
       </div>
       {isOver && <div
