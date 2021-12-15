@@ -1,6 +1,6 @@
 import {useDrag, useDrop} from "react-dnd";
 import {ItemTypes} from "../data/types";
-import {appendMember, getGroups, getMembers} from "../data/Data";
+import {appendMember, getGroups, getMembers, getMembersMerged} from "../data/Data";
 import Member from "./Member";
 import ToggleInput from "./ToggleInput";
 import BubbleChart from "./BubbleChart";
@@ -33,9 +33,9 @@ function Group({groupId, title, data, disableShowTalent, style}) {
 
   const groups = groupId ? getGroups(groupId) : [];
   const members = getMembers(groupId);
-
+  const mergedMembers = getMembersMerged(groupId);
   let talentsForMembers = [];
-  members
+  mergedMembers
     .filter((member) => member.type === ItemTypes.Member)
     .forEach(member => {
       if (member.children) {
@@ -56,15 +56,23 @@ function Group({groupId, title, data, disableShowTalent, style}) {
         display: 'flex',
         flexFlow: 'column',
         position: 'relative',
-        width: 200,
-        height: 300,
-        maxHeight: 500,
+        minWidth: 200,
+        maxWidth: 300,
+        minHeight: 300,
         border: '1px solid gray',
         borderRadius: 5,
         ...style,
       }}
     >
-      <div ref={drag} style={{height: '100%', display: 'flex', flexFlow: 'column'}}>
+      <div
+        ref={drag}
+        style={{
+          display: 'flex',
+          flexFlow: 'column',
+          minWidth: 200,
+          minHeight: 300,
+          gap: 5,
+        }}>
         <div style={{fontWeight: 'bold', padding: 5}}>
           <ToggleInput value={title} elemId={groupId}/>
         </div>
@@ -77,9 +85,14 @@ function Group({groupId, title, data, disableShowTalent, style}) {
               color: data[key].color,
             }))}
         />
-        <div>
+        <div style={{display: 'flex', gap: 5, margin: 5, overflow: 'auto'}}>
           {groups.map((group) => (
-            <MemberedGroup groupId={group.id} title={group.title}/>
+            <Group
+              key={group.id}
+              data={data}
+              groupId={group.id}
+              title={group.title}
+            />
           ))}
         </div>
         <div style={{overflow: 'auto', padding: 5}}>

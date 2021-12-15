@@ -87,6 +87,22 @@ export const getGroups = (groupId) => {
 export const getMembers = (groupId) => {
   if (!groupId) {
     return Object.values(Data)
+      .filter((elem) =>
+        elem.type === ItemTypes.Member
+        && !elem.parent
+      )
+  }
+  const memberIds =
+    Data[groupId] && Data[groupId].children
+      ? Data[groupId].children
+        .filter((memberId) => Data[memberId].type === ItemTypes.Member)
+      : [];
+  return Object.values(Data).filter((elem) => memberIds.includes(elem.id));
+}
+
+export const getMembersMerged = (groupId) => {
+  if (!groupId) {
+    return Object.values(Data)
       .filter((elem) => !elem.parent)
       .filter((elem) => elem.type === ItemTypes.Member)
   }
@@ -95,17 +111,13 @@ export const getMembers = (groupId) => {
     Data[groupId].children
       .filter((childId) => Data[childId].type === ItemTypes.Group)
       .forEach((groupId) => {
-        const m = getMembers(groupId);
+        const m = getMembersMerged(groupId);
         members = members.concat(m);
       })
   }
 
-  const memberIds =
-    Data[groupId] && Data[groupId].children
-      ? Data[groupId].children
-        .filter((memberId) => Data[memberId].type === ItemTypes.Member)
-      : [];
-  return members.concat(Object.values(Data).filter((elem) => memberIds.includes(elem.id)));
+  const ownMembers = getMembers(groupId);
+  return members.concat(ownMembers);
 }
 
 export const appendMember = (groupId, memberId) => {
