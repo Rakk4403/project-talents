@@ -40,6 +40,9 @@ const hasChild = (elemId, childId) => {
   return Data[elemId].children.includes(childId);
 }
 const addChild = (elemId, newChildId) => {
+  if (!elemId) {
+    return;
+  }
   if (Data[elemId] && Data[elemId].children) {
     Data[elemId].children.push(newChildId);
   } else {
@@ -67,6 +70,18 @@ let observer = null;
 const emitChange = () => {
   console.log('Data', Data);
   observer(Data);
+}
+
+export const getGroups = (groupId) => {
+  if (groupId) {
+    return Object.values(Data).filter(
+      (elem) => elem.type === ItemTypes.Group && elem.parent === groupId
+    )
+  } else {
+    return Object.values(Data).filter(
+      (elem) => elem.type === ItemTypes.Group && !elem.parent
+    )
+  }
 }
 
 export const getMembers = (groupId) => {

@@ -1,6 +1,6 @@
 import {useDrag, useDrop} from "react-dnd";
 import {ItemTypes} from "../data/types";
-import {appendMember, getMembers} from "../data/Data";
+import {appendMember, getGroups, getMembers} from "../data/Data";
 import Member from "./Member";
 import ToggleInput from "./ToggleInput";
 import BubbleChart from "./BubbleChart";
@@ -9,8 +9,14 @@ import MemberedGroup from "./MemberedGroup";
 function Group({groupId, title, data, disableShowTalent, style}) {
   const [{isOver}, drop] = useDrop(() => ({
     accept: [ItemTypes.Member, ItemTypes.Group],
-    drop: (item) => {
+    drop: (item, monitor) => {
+      if (monitor.didDrop()) {
+        return;
+      }
       appendMember(groupId, item.groupId || item.memberId)
+    },
+    canDrop: (item, monitor) => {
+      return item.groupId !== groupId;
     },
     collect: monitor => ({
       isOver: !!monitor.isOver(),
@@ -25,12 +31,7 @@ function Group({groupId, title, data, disableShowTalent, style}) {
     })
   }))
 
-  const groupIds = data[groupId]
-    ? data[groupId].children.filter((groupId) => data[groupId].type === ItemTypes.Group)
-    : [];
-  const groups = Object.values(data)
-    .filter((elem) => groupIds.includes(elem.id));
-
+  const groups = groupId ? getGroups(groupId) : [];
   const members = getMembers(groupId);
 
   let talentsForMembers = [];
@@ -78,7 +79,7 @@ function Group({groupId, title, data, disableShowTalent, style}) {
         />
         <div>
           {groups.map((group) => (
-            <MemberedGroup title={group.title}/>
+            <MemberedGroup groupId={group.id} title={group.title}/>
           ))}
         </div>
         <div style={{overflow: 'auto', padding: 5}}>
