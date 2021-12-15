@@ -51,8 +51,6 @@ function ControlPanel({data}) {
               style={{height: '100%', width: '100%'}}
               data={data}
               title={'Member Basket'}
-              members={Object.values(data)
-                .filter((elem) => !elem.parent && elem.type === ItemTypes.Member)}
             />
           </div>
           <div style={{display: 'flex', flexWrap: 'wrap'}}>
