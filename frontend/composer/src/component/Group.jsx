@@ -28,6 +28,7 @@ function Group({groupId, title, data, style}) {
         const nextLevel = Math.max(...childrenLevels) + 1;
         setLevel(groupId, nextLevel)
         console.log(title, level, item.level, nextLevel)
+        return {title}
       }
     },
     canDrop: (item, monitor) => {
@@ -37,9 +38,27 @@ function Group({groupId, title, data, style}) {
       isOver: !!monitor.isOver(),
     }),
   }), [level])
+
   const [{isDragging}, drag] = useDrag(() => ({
     type: ItemTypes.Group,
-    item: {groupId: groupId},
+    item: {
+      groupId: groupId,
+      level: level,
+      type: ItemTypes.Group,
+      prevParent: getParent(groupId),
+    },
+    end: (item, monitor) => {
+      console.log('end', item.prevParent, monitor.getDropResult())
+      if (!item.prevParent) return
+      const childrenLevels = getChildrenLevels(item.prevParent);
+      childrenLevels.splice(childrenLevels.indexOf(item.level), 1)
+      if (!childrenLevels || childrenLevels.length === 0) {
+        setLevel(item.prevParent, 1)
+        return
+      }
+      const nextLevel = Math.max(...childrenLevels) + 1;
+      setLevel(item.prevParent, nextLevel)
+    },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging()
     })

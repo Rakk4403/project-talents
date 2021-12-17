@@ -60,7 +60,7 @@ const removeChild = (elemId, childId) => {
   }
 }
 
-const getParent = (elemId) => {
+export const getParent = (elemId) => {
   return Data[elemId] && Data[elemId].parent;
 }
 

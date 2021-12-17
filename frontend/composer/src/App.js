@@ -13,6 +13,7 @@ function App({data}) {
         return;
       }
       appendMember(null, item.groupId || item.memberId)
+      return {title: 'playground'}
     },
     canDrop: (item, monitor) => {
       return item.groupId;
