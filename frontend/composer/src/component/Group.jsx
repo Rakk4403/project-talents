@@ -1,12 +1,20 @@
 import {useDrag, useDrop} from "react-dnd";
 import {ItemTypes} from "../data/types";
-import {appendMember, getGroups, getMembers, getMembersMerged} from "../data/Data";
+import {
+  appendMember,
+  getChildrenLevels,
+  getGroups,
+  getLevel,
+  getMembers,
+  getMembersMerged, getParent,
+  setLevel
+} from "../data/Data";
 import Member from "./Member";
 import ToggleInput from "./ToggleInput";
 import BubbleChart from "./BubbleChart";
-import MemberedGroup from "./MemberedGroup";
 
-function Group({groupId, title, data, disableShowTalent, style}) {
+function Group({groupId, title, data, style}) {
+  const level = getLevel(groupId);
   const [{isOver}, drop] = useDrop(() => ({
     accept: [ItemTypes.Member, ItemTypes.Group],
     drop: (item, monitor) => {
@@ -14,6 +22,13 @@ function Group({groupId, title, data, disableShowTalent, style}) {
         return;
       }
       appendMember(groupId, item.groupId || item.memberId)
+      if (item.type === ItemTypes.Group) {
+        const childrenLevels = getChildrenLevels(groupId);
+        childrenLevels.push(item.level);
+        const nextLevel = Math.max(...childrenLevels) + 1;
+        setLevel(groupId, nextLevel)
+        console.log(title, level, item.level, nextLevel)
+      }
     },
     canDrop: (item, monitor) => {
       return item.groupId !== groupId;
@@ -21,16 +36,14 @@ function Group({groupId, title, data, disableShowTalent, style}) {
     collect: monitor => ({
       isOver: !!monitor.isOver(),
     }),
-  }), [])
-
+  }), [level])
   const [{isDragging}, drag] = useDrag(() => ({
     type: ItemTypes.Group,
     item: {groupId: groupId},
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging()
     })
-  }))
-
+  }), [level])
   const groups = groupId ? getGroups(groupId) : [];
   const members = getMembers(groupId);
   const mergedMembers = getMembersMerged(groupId);
@@ -49,6 +62,7 @@ function Group({groupId, title, data, disableShowTalent, style}) {
     }
     talentCountMap[talentId] += 1;
   })
+
   return (
     <div
       ref={drop}
@@ -56,8 +70,8 @@ function Group({groupId, title, data, disableShowTalent, style}) {
         display: 'flex',
         flexFlow: 'column',
         position: 'relative',
-        minWidth: 200,
-        maxWidth: 300,
+        minWidth: 100 + level * 100,
+        maxWidth: 100 + level * 100,
         minHeight: 300,
         border: '1px solid gray',
         borderRadius: 5,
@@ -69,7 +83,6 @@ function Group({groupId, title, data, disableShowTalent, style}) {
         style={{
           display: 'flex',
           flexFlow: 'column',
-          minWidth: 200,
           minHeight: 300,
           gap: 5,
         }}>
@@ -85,7 +98,8 @@ function Group({groupId, title, data, disableShowTalent, style}) {
               color: data[key].color,
             }))}
         />
-        <div style={{display: 'flex', gap: 5, margin: 5, overflow: 'auto'}}>
+        <div
+          style={{display: 'flex', gap: 5, margin: 5, overflow: 'auto'}}>
           {groups.map((group) => (
             <Group
               key={group.id}

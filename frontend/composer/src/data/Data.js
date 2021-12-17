@@ -72,6 +72,24 @@ const emitChange = () => {
   observer(Data);
 }
 
+export const getChildrenLevels = (groupId) => {
+  if (Data[groupId]) {
+    return Data[groupId].children.map(childId => getLevel(childId));
+  }
+  return [];
+}
+export const getLevel = (groupId) => {
+  if (Data[groupId]) {
+    return Data[groupId].level || 1
+  }
+  return 0
+}
+
+export const setLevel = (groupId, level) => {
+  Data[groupId].level = level;
+  emitChange();
+}
+
 export const getGroups = (groupId) => {
   if (groupId) {
     return Object.values(Data).filter(
