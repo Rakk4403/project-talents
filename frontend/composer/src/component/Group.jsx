@@ -18,7 +18,7 @@ function Group({
                  disableBubbleChart, disableDrag, disableDrop
                }) {
   const level = getLevel(groupId);
-  const [{isOver}, drop] = useDrop(() => ({
+  const [{isOverCurrent}, drop] = useDrop(() => ({
     accept: [ItemTypes.Member, ItemTypes.Group],
     drop: (item, monitor) => {
       if (monitor.didDrop()) {
@@ -42,12 +42,13 @@ function Group({
       }
     },
     canDrop: (item, monitor) => {
+      console.log('candrop', groupId)
       return item.groupId !== groupId;
     },
     collect: monitor => ({
-      isOver: !!monitor.isOver(),
+      isOverCurrent: monitor.isOver({shallow: true}),
     }),
-  }), [level])
+  }), [level, setLevel])
 
   const [{isDragging}, drag] = useDrag(() => ({
     type: ItemTypes.Group,
@@ -71,7 +72,7 @@ function Group({
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging()
     })
-  }), [level])
+  }), [level, setLevel])
   const groups = groupId ? getGroups(groupId) : [];
   const members = getMembers(groupId);
   const mergedMembers = getMembersMerged(groupId);
@@ -92,6 +93,9 @@ function Group({
   })
 
   const width = style && style.width || 100 + level * 100;
+  const isOverStyle = isOverCurrent ? {
+    backgroundColor: 'lightgray',
+  } : {};
   return (
     <div
       ref={disableDrop ? null : drop}
@@ -104,6 +108,7 @@ function Group({
         minHeight: 300,
         border: '1px solid gray',
         borderRadius: 5,
+        backgroundColor: 'white',
         ...style,
       }}
     >
@@ -114,6 +119,7 @@ function Group({
           flexFlow: 'column',
           minHeight: 300,
           gap: 5,
+          ...isOverStyle,
         }}>
         <div style={{fontWeight: 'bold', padding: 5}}>
           <ToggleInput value={title} elemId={groupId}/>
@@ -156,17 +162,6 @@ function Group({
             ))}
         </div>
       </div>
-      {isOver && <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          backgroundColor: 'black',
-          opacity: 0.3,
-        }}
-      />}
     </div>
   )
 }

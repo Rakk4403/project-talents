@@ -16,11 +16,13 @@ function App({data}) {
       return {title: 'playground'}
     },
     canDrop: (item, monitor) => {
-      return item.groupId;
+      return item.groupId && item.prevParent !== null;
     },
     collect: monitor => {
+      console.log('monitor', monitor.getItem())
       return {
-        isOver: !!monitor.isOver({shallow: true}),
+        isOver: !!monitor.isOver({shallow: true})
+          && monitor.getItem().prevParent !== null,
       };
     },
   }), [])
@@ -33,6 +35,7 @@ function App({data}) {
         id="playground"
         ref={drop}
         style={{
+          padding: 10,
           opacity: isOver ? 0.3 : 1,
           backgroundColor: isOver ? 'lightgray' : 'transparent',
           display: 'flex',
