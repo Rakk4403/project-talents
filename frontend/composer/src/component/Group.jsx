@@ -39,7 +39,6 @@ function Group({groupId, title, data, style, disableBubbleChart}) {
       }
     },
     canDrop: (item, monitor) => {
-      console.log('groupid', item.groupId, groupId)
       return item.groupId !== groupId;
     },
     collect: monitor => ({
@@ -56,7 +55,6 @@ function Group({groupId, title, data, style, disableBubbleChart}) {
       prevParent: getParent(groupId),
     },
     end: (item, monitor) => {
-      console.log('end', item.prevParent, monitor.getDropResult())
       if (!item.prevParent) return
       const childrenLevels = getChildrenLevels(item.prevParent);
       childrenLevels.splice(childrenLevels.indexOf(item.level), 1)

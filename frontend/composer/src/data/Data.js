@@ -186,6 +186,18 @@ const deleteElemFromAllChildren = (elemId) => {
 
 export const deleteElem = (elemId) => {
   deleteElemFromAllChildren(elemId)
+  if (Data[elemId].type === ItemTypes.Group) {
+    Data[elemId].children
+      .filter((childId) => Data[childId].type === ItemTypes.Group)
+      .forEach((childId) => {
+        removeChild(elemId, childId)
+        changeParent(childId, null);
+      })
+  } else if (Data[elemId].type === ItemTypes.Member) {
+
+  } else if (Data[elemId].type === ItemTypes.Talent) {
+
+  }
   delete Data[elemId];
   emitChange();
 }
