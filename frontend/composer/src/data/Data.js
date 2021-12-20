@@ -111,7 +111,7 @@ export const getMembers = (groupId) => {
       )
   }
   const memberIds =
-    Data[groupId] && Data[groupId].children
+    Data[groupId] && Data[groupId].children.length > 0
       ? Data[groupId].children
         .filter((memberId) => Data[memberId].type === ItemTypes.Member)
       : [];
@@ -179,7 +179,8 @@ export const addElem = (itemType) => {
 const deleteElemFromAllChildren = (elemId) => {
   Object.keys(Data).forEach((key) => {
     if (Data[key].children && Data[key].children.includes(elemId)) {
-      Data[key].children.splice(elemId, 1);
+      const idx = Data[key].children.indexOf(elemId)
+      Data[key].children.splice(idx, 1);
     }
   })
 }
@@ -191,6 +192,11 @@ export const deleteElem = (elemId) => {
       .filter((childId) => Data[childId].type === ItemTypes.Group)
       .forEach((childId) => {
         removeChild(elemId, childId)
+        changeParent(childId, null);
+      })
+    Data[elemId].children
+      .filter((childId) => Data[childId].type === ItemTypes.Member)
+      .forEach((childId) => {
         changeParent(childId, null);
       })
   } else if (Data[elemId].type === ItemTypes.Member) {
