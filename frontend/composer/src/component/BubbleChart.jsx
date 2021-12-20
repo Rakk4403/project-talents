@@ -13,7 +13,7 @@ class BubbleChart extends React.Component {
     this.mounted = false;
 
     this.state = {
-      data: []
+      data: [],
     };
 
     this.radiusScale = this.radiusScale.bind(this);
@@ -21,6 +21,7 @@ class BubbleChart extends React.Component {
     this.renderBubbles = this.renderBubbles.bind(this);
 
     this.ref = React.createRef();
+    this.imageRef = React.createRef();
   }
 
   componentWillMount() {
@@ -174,16 +175,21 @@ class BubbleChart extends React.Component {
 
   render() {
     if (this.state.data.length) {
+      const height = this.imageRef.current && this.imageRef.current.getBBox().height + 20;
       return (
         <div ref={this.ref}>
-          <svg width={this.props.width} height={this.props.height}>
+          <svg
+            ref={this.imageRef}
+            width={this.props.width}
+            height={this.props.height || height}
+          >
             {this.renderBubbles(this.state.data)}
           </svg>
         </div>
       );
     }
 
-    return <div>Loading</div>;
+    return <div/>;
   }
 }
 
@@ -198,7 +204,6 @@ BubbleChart.defaultProps = {
   data: [],
   useLabels: false,
   width: '100%',
-  height: '100%',
 };
 
 export default BubbleChart;
