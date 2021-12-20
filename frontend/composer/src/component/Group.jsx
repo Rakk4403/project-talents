@@ -13,7 +13,7 @@ import Member from "./Member";
 import ToggleInput from "./ToggleInput";
 import BubbleChart from "./BubbleChart";
 
-function Group({groupId, title, data, style}) {
+function Group({groupId, title, data, style, disableBubbleChart}) {
   const level = getLevel(groupId);
   const [{isOver}, drop] = useDrop(() => ({
     accept: [ItemTypes.Member, ItemTypes.Group],
@@ -21,7 +21,14 @@ function Group({groupId, title, data, style}) {
       if (monitor.didDrop()) {
         return;
       }
-      appendMember(groupId, item.groupId || item.memberId)
+      if (item.type === ItemTypes.Group) {
+        appendMember(groupId, item.groupId)
+      } else if (item.type === ItemTypes.Member) {
+        appendMember(groupId, item.memberId)
+      } else {
+        console.error('ItemTypes error', item)
+      }
+
       if (item.type === ItemTypes.Group) {
         const childrenLevels = getChildrenLevels(groupId);
         childrenLevels.push(item.level);
@@ -32,6 +39,7 @@ function Group({groupId, title, data, style}) {
       }
     },
     canDrop: (item, monitor) => {
+      console.log('groupid', item.groupId, groupId)
       return item.groupId !== groupId;
     },
     collect: monitor => ({
@@ -109,6 +117,7 @@ function Group({groupId, title, data, style}) {
         <div style={{fontWeight: 'bold', padding: 5}}>
           <ToggleInput value={title} elemId={groupId}/>
         </div>
+        {!disableBubbleChart &&
         <BubbleChart
           useLabels
           data={Object.keys(talentCountMap)
@@ -118,6 +127,7 @@ function Group({groupId, title, data, style}) {
               color: data[key].color,
             }))}
         />
+        }
         <div
           style={{display: 'flex', gap: 5, margin: 5, overflow: 'auto'}}>
           {groups.map((group) => (

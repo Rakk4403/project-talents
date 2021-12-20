@@ -47,7 +47,7 @@ function ControlPanel({data}) {
           </div>
           <div style={{display: 'flex', height: '50%'}}>
             <Group
-              disableShowTalent
+              disableBubbleChart
               style={{height: '100%', width: '100%'}}
               data={data}
               title={'Member Basket'}
