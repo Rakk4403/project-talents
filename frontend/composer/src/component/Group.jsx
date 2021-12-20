@@ -82,6 +82,7 @@ function Group({groupId, title, data, style}) {
     talentCountMap[talentId] += 1;
   })
 
+  const width = style && style.width || 100 + level * 100;
   return (
     <div
       ref={drop}
@@ -89,8 +90,8 @@ function Group({groupId, title, data, style}) {
         display: 'flex',
         flexFlow: 'column',
         position: 'relative',
-        minWidth: 100 + level * 100,
-        maxWidth: 100 + level * 100,
+        minWidth: width,
+        maxWidth: width,
         minHeight: 300,
         border: '1px solid gray',
         borderRadius: 5,
