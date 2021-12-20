@@ -22,7 +22,7 @@ function ControlPanel({data}) {
         flexFlow: 'column',
         gap: 10,
       }}>
-        <div style={{backgroundColor: 'gray'}}>
+        <div style={{backgroundColor: 'gray', height: '5%'}}>
           <strong className="panelHandle">
             <div>Handle</div>
           </strong>
@@ -30,8 +30,9 @@ function ControlPanel({data}) {
         <div style={{
           display: 'flex',
           flexFlow: 'column',
-          height: '100%',
+          height: '95%',
           gap: 10,
+          padding: 10,
         }}>
           <div style={{
             display: 'flex', justifyContent: 'center',
@@ -48,12 +49,14 @@ function ControlPanel({data}) {
           <div style={{display: 'flex', height: '50%'}}>
             <Group
               disableBubbleChart
+              disableDrag
+              disableDrop
               style={{height: '100%', width: '100%'}}
               data={data}
               title={'Member Basket'}
             />
           </div>
-          <div style={{display: 'flex', flexWrap: 'wrap'}}>
+          <div style={{display: 'flex', flexWrap: 'wrap', overflow: 'auto'}}>
             {talentKeys.map((key) =>
               <Talent
                 key={key}

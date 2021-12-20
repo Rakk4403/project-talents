@@ -13,7 +13,10 @@ import Member from "./Member";
 import ToggleInput from "./ToggleInput";
 import BubbleChart from "./BubbleChart";
 
-function Group({groupId, title, data, style, disableBubbleChart}) {
+function Group({
+                 groupId, title, data, style,
+                 disableBubbleChart, disableDrag, disableDrop
+               }) {
   const level = getLevel(groupId);
   const [{isOver}, drop] = useDrop(() => ({
     accept: [ItemTypes.Member, ItemTypes.Group],
@@ -91,7 +94,7 @@ function Group({groupId, title, data, style, disableBubbleChart}) {
   const width = style && style.width || 100 + level * 100;
   return (
     <div
-      ref={drop}
+      ref={disableDrop ? null : drop}
       style={{
         display: 'flex',
         flexFlow: 'column',
@@ -105,7 +108,7 @@ function Group({groupId, title, data, style, disableBubbleChart}) {
       }}
     >
       <div
-        ref={drag}
+        ref={disableDrag ? null : drag}
         style={{
           display: 'flex',
           flexFlow: 'column',
@@ -171,6 +174,8 @@ function Group({groupId, title, data, style, disableBubbleChart}) {
 Group.defaultProps = {
   data: {},
   members: [],
+  disableDrag: false,
+  disableDrop: false,
 }
 
 export default Group;
