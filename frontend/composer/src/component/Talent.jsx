@@ -28,7 +28,7 @@ function Talent({title, talentId, color}) {
       }}
     >
       <div style={{color: 'black'}}>
-        <ToggleInput elemId={talentId} value={title}/>
+        <ToggleInput style={{width: 40}} elemId={talentId} value={title}/>
       </div>
     </div>
   );

@@ -1,13 +1,14 @@
 import {modifyElemTitle} from "../data/Data";
 import {Fragment, useState} from "react";
 
-function ToggleInput({value, elemId}) {
+function ToggleInput({value, elemId, style}) {
   const [clicked, setClicked] = useState(false);
   const [newTitle, setNewTitle] = useState(value);
   return (
     <Fragment>
       {clicked ?
         <input
+          style={{...style}}
           autoFocus
           value={newTitle}
           onKeyDown={(e) => {

@@ -13,8 +13,9 @@ function ControlPanel({data}) {
       <div style={{
         border: 'solid',
         borderColor: 'lightgray',
-        borderRadius: 5,
+        borderRadius: 10,
         borderWidth: 1,
+        boxShadow: "grey 1px 1px 5px",
         backgroundColor: 'aliceblue',
         width: '20%',
         height: 800,
@@ -22,10 +23,14 @@ function ControlPanel({data}) {
         flexFlow: 'column',
         gap: 10,
       }}>
-        <div style={{backgroundColor: 'gray', height: '5%'}}>
-          <strong className="panelHandle">
-            <div>Handle</div>
-          </strong>
+        <div
+          className="panelHandle"
+          style={{
+            backgroundColor: 'gray',
+            height: '3%',
+            borderTopRightRadius: 10,
+            borderTopLeftRadius: 10,
+          }}>
         </div>
         <div style={{
           display: 'flex',
