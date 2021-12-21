@@ -6,17 +6,34 @@ import {
   getGroups,
   getLevel,
   getMembers,
-  getMembersMerged, getParent,
+  getMembersMerged, getParentId,
   setLevel
 } from "../data/Data";
 import Member from "./Member";
 import ToggleInput from "./ToggleInput";
 import BubbleChart from "./BubbleChart";
+import {useState} from "react";
+
+function arrangeLevel(groupId) {
+  console.log('arrangeLevel', groupId)
+  if (!groupId) return
+  const childrenLevels = getChildrenLevels(groupId);
+  childrenLevels.splice(childrenLevels.indexOf(getLevel(groupId)), 1)
+  if (!childrenLevels || childrenLevels.length === 0) {
+    setLevel(groupId, 1)
+    arrangeLevel(getParentId(groupId))
+    return
+  }
+  const nextLevel = Math.max(...childrenLevels) + 1;
+  arrangeLevel(getParentId(groupId))
+  setLevel(groupId, nextLevel)
+}
 
 function Group({
                  groupId, title, data, style,
                  disableBubbleChart, disableDrag, disableDrop
                }) {
+  const [scroll, setScroll] = useState(true);
   const level = getLevel(groupId);
   const [{isOverCurrent}, drop] = useDrop(() => ({
     accept: [ItemTypes.Member, ItemTypes.Group],
@@ -37,12 +54,10 @@ function Group({
         childrenLevels.push(item.level);
         const nextLevel = Math.max(...childrenLevels) + 1;
         setLevel(groupId, nextLevel)
-        console.log(title, level, item.level, nextLevel)
         return {title}
       }
     },
     canDrop: (item, monitor) => {
-      console.log('candrop', groupId)
       return item.groupId !== groupId;
     },
     collect: monitor => ({
@@ -56,18 +71,10 @@ function Group({
       groupId: groupId,
       level: level,
       type: ItemTypes.Group,
-      prevParent: getParent(groupId),
+      prevParent: getParentId(groupId),
     },
     end: (item, monitor) => {
-      if (!item.prevParent) return
-      const childrenLevels = getChildrenLevels(item.prevParent);
-      childrenLevels.splice(childrenLevels.indexOf(item.level), 1)
-      if (!childrenLevels || childrenLevels.length === 0) {
-        setLevel(item.prevParent, 1)
-        return
-      }
-      const nextLevel = Math.max(...childrenLevels) + 1;
-      setLevel(item.prevParent, nextLevel)
+      arrangeLevel(item.prevParent)
     },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging()
@@ -92,7 +99,7 @@ function Group({
     talentCountMap[talentId] += 1;
   })
 
-  const width = style && style.width || 100 + level * 100;
+  const width = style && style.width || 100 + level * 150;
   const isOverStyle = isOverCurrent ? {
     backgroundColor: 'lightgray',
   } : {};
@@ -103,8 +110,8 @@ function Group({
         display: 'flex',
         flexFlow: 'column',
         position: 'relative',
-        minWidth: width,
-        maxWidth: width,
+        minWidth: 200,
+        width: scroll ? width : '100%',
         minHeight: 300,
         border: '1px solid gray',
         borderRadius: 5,
@@ -123,6 +130,11 @@ function Group({
         }}>
         <div style={{fontWeight: 'bold', padding: 5}}>
           <ToggleInput value={title} elemId={groupId}/>
+          <input
+            type='checkbox'
+            onClick={() => setScroll(!scroll)}
+            alt="Disable scroll"
+          ></input>
         </div>
         {!disableBubbleChart &&
         <BubbleChart
