@@ -2,6 +2,20 @@ import React from "react";
 import PropTypes from "prop-types";
 import * as d3 from 'd3';
 
+const isEquivalent = (prevData, data) => {
+  if (prevData.length !== data.length) {
+    return false;
+  }
+  const compareArr = []
+  prevData.forEach((item, idx) => {
+    if (data[idx].v === item.v) {
+      compareArr.push(true);
+    } else {
+      compareArr.push(false);
+    }
+  })
+  return !compareArr.includes(false)
+}
 
 // origin from https://codepen.io/Jackfiallos/pen/jLWrjb
 class BubbleChart extends React.Component {
@@ -48,6 +62,9 @@ class BubbleChart extends React.Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.data !== this.props.data) {
+      if (isEquivalent(prevProps.data, this.props.data)) {
+        return;
+      }
       this.minValue =
         0.95 *
         d3.min(this.props.data, item => {
