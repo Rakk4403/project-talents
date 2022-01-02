@@ -21,6 +21,8 @@ ws.onclose = () => {
 }
 ws.onmessage = (e) => {
   console.log('messageEvent', e)
+  if (e.data === 'pong') return;
+  
   const data = JSON.parse(e.data);
   if (data.operation === 'create') {
     Data[data.item.id] = data.item;
