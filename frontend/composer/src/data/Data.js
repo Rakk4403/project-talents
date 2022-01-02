@@ -51,16 +51,18 @@ const addChild = (elemId, newChildId) => {
       children: [newChildId],
     };
   }
+  updateItem(Data[elemId]);
 }
 
 const removeChild = (elemId, childId) => {
   if (elemId) {
     const idx = Data[elemId].children.indexOf(childId)
     idx !== -1 && Data[elemId].children.splice(idx, 1);
+    updateItem(Data[elemId]);
   }
 }
 
-export const getParent = (elemId) => {
+export const getParentId = (elemId) => {
   return Data[elemId] && Data[elemId].parent;
 }
 
@@ -87,7 +89,7 @@ export const getLevel = (groupId) => {
 
 export const setLevel = (groupId, level) => {
   Data[groupId].level = level;
-  emitChange();
+  updateItem(Data[groupId]);
 }
 
 export const getGroups = (groupId) => {
@@ -142,11 +144,13 @@ export const appendMember = (groupId, memberId) => {
   if (groupId && hasChild(groupId, memberId)) {
     return;
   }
-  const prevGroupId = getParent(memberId);
+  const prevGroupId = getParentId(memberId);
   removeChild(prevGroupId, memberId);
+  updateItem(Data[prevGroupId])
   addChild(groupId, memberId);
+  updateItem(Data[groupId])
   changeParent(memberId, groupId);
-  emitChange();
+  updateItem(Data[memberId])
 }
 
 export const appendTalent = (memberId, talentId) => {
@@ -154,26 +158,28 @@ export const appendTalent = (memberId, talentId) => {
     return;
   }
   addChild(memberId, talentId);
-  changeParent(talentId, memberId);
-  emitChange();
+  updateItem(Data[memberId])
+  // changeParent(talentId, memberId);
+  // updateItem(Data[talentId])
 }
 
 export const addElem = (itemType) => {
-  const randomId = generateRandomId();
   let prefix = 'Group';
   if (itemType === ItemTypes.Member) {
     prefix = 'Member';
   } else if (itemType === ItemTypes.Talent) {
     prefix = 'Talent';
   }
-  Data[randomId] = {
-    id: randomId,
-    title: `${prefix}-${randomId}`,
+  const elemCount = Object.values(Data)
+    .filter((elem) => elem.type === itemType)
+    .length
+  const elem = {
+    title: `${prefix}${elemCount}`,
     type: itemType,
     children: [],
     color: generateRandomColor(),
   };
-  emitChange();
+  createItem(elem)
 }
 
 const deleteElemFromAllChildren = (elemId) => {
@@ -181,6 +187,7 @@ const deleteElemFromAllChildren = (elemId) => {
     if (Data[key].children && Data[key].children.includes(elemId)) {
       const idx = Data[key].children.indexOf(elemId)
       Data[key].children.splice(idx, 1);
+      updateItem(Data[key]);
     }
   })
 }
@@ -191,26 +198,26 @@ export const deleteElem = (elemId) => {
     Data[elemId].children
       .filter((childId) => Data[childId].type === ItemTypes.Group)
       .forEach((childId) => {
-        removeChild(elemId, childId)
         changeParent(childId, null);
+        updateItem(Data[childId])
       })
     Data[elemId].children
       .filter((childId) => Data[childId].type === ItemTypes.Member)
       .forEach((childId) => {
         changeParent(childId, null);
+        updateItem(Data[childId])
       })
   } else if (Data[elemId].type === ItemTypes.Member) {
 
   } else if (Data[elemId].type === ItemTypes.Talent) {
 
   }
-  delete Data[elemId];
-  emitChange();
+  deleteItem(Data[elemId]);
 }
 
 export const modifyElemTitle = (elemId, title) => {
   Data[elemId].title = title;
-  emitChange();
+  updateItem(Data[elemId]);
 }
 
 export const reset = () => {
