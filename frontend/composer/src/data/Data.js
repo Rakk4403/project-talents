@@ -1,4 +1,5 @@
 import {ItemTypes} from "./types";
+import {ACTION, createItem, deleteItem, updateItem, ws} from "./Websocket";
 
 export const generateRandomColor = () => {
   function r() {
@@ -8,17 +9,33 @@ export const generateRandomColor = () => {
   return 'rgb(' + r() + "," + r() + "," + r() + ')';
 }
 
-const Data = {
-  'g0': {id: 'g0', parent: null, children: [], title: 'group1', type: ItemTypes.Group},
-  'g1': {id: 'g1', parent: null, children: [], title: 'group2', type: ItemTypes.Group},
-  'g2': {id: 'g2', parent: null, children: [], title: 'group3', type: ItemTypes.Group},
-  'm0': {id: 'm0', parent: null, children: ['t0', 't1', 't2'], title: 'member1', type: ItemTypes.Member},
-  'm1': {id: 'm1', parent: null, children: ['t1', 't2'], title: 'member2', type: ItemTypes.Member},
-  'm2': {id: 'm2', parent: null, children: ['t2'], title: 'member3', type: ItemTypes.Member},
-  't0': {id: 't0', title: 'talent1', type: ItemTypes.Talent},
-  't1': {id: 't1', title: 'talent2', type: ItemTypes.Talent},
-  't2': {id: 't2', title: 'talent3', type: ItemTypes.Talent},
-};
+let pingInterval;
+ws.onopen = (e) => {
+  ws.send(JSON.stringify({operation: 'list', action: ACTION}))
+  pingInterval = setInterval(() => {
+    ws.send(JSON.stringify({operation: 'ping', action: ACTION}));
+  }, 40000);
+}
+ws.onclose = () => {
+  clearInterval(pingInterval);
+}
+ws.onmessage = (e) => {
+  console.log('messageEvent', e)
+  const data = JSON.parse(e.data);
+  if (data.operation === 'create') {
+    Data[data.item.id] = data.item;
+  } else if (data.operation === 'delete') {
+    delete Data[data.item.id];
+  } else if (data.operation === 'update') {
+    Data[data.item.id] = data.item;
+  } else if (data.operation === 'list') {
+    data.items.forEach((item) => {
+      Data[item.id] = item;
+    })
+  }
+  emitChange();
+}
+const Data = {};
 Object.keys(Data).forEach((key) => Data[key].color = generateRandomColor());
 
 const changeParent = (elemId, newParentId) => {
