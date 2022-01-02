@@ -1,9 +1,14 @@
 import {modifyElemTitle} from "../data/Data";
-import {Fragment, useState} from "react";
+import {Fragment, useEffect, useState} from "react";
 
 function ToggleInput({value, elemId, style}) {
   const [clicked, setClicked] = useState(false);
   const [newTitle, setNewTitle] = useState(value);
+
+  useEffect(() => {
+    setNewTitle(value);
+  }, [value]);
+
   return (
     <Fragment>
       {clicked ?
