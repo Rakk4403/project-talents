@@ -1,6 +1,8 @@
 import {ItemTypes} from "./types";
 import {ACTION, createItem, deleteItem, updateItem, ws} from "./Websocket";
 
+let projectId = '';
+
 export const generateRandomColor = () => {
   function r() {
     return Math.floor(Math.random() * 255)
@@ -11,7 +13,6 @@ export const generateRandomColor = () => {
 
 let pingInterval;
 ws.onopen = (e) => {
-  ws.send(JSON.stringify({operation: 'list', action: ACTION}))
   pingInterval = setInterval(() => {
     ws.send(JSON.stringify({operation: 'ping', action: ACTION}));
   }, 40000);
@@ -22,7 +23,7 @@ ws.onclose = () => {
 ws.onmessage = (e) => {
   console.log('messageEvent', e)
   if (e.data === 'pong') return;
-  
+
   const data = JSON.parse(e.data);
   if (data.operation === 'create') {
     Data[data.item.id] = data.item;
@@ -177,9 +178,7 @@ export const appendTalent = (memberId, talentId) => {
     return;
   }
   addChild(memberId, talentId);
-  updateItem(Data[memberId])
-  // changeParent(talentId, memberId);
-  // updateItem(Data[talentId])
+  updateItem(Data[memberId]);
 }
 
 export const addElem = (itemType) => {
@@ -197,6 +196,7 @@ export const addElem = (itemType) => {
     type: itemType,
     children: [],
     color: generateRandomColor(),
+    projId: projectId,
   };
   createItem(elem)
 }
@@ -253,4 +253,9 @@ export const reset = () => {
 export const observe = (o) => {
   observer = o;
   emitChange();
+  console.log(Data)
+}
+
+export const setProjectId = (val) => {
+  projectId = val;
 }

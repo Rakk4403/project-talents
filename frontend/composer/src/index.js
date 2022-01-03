@@ -6,13 +6,15 @@ import reportWebVitals from './reportWebVitals';
 import {observe} from "./data/Data";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {DndProvider} from "react-dnd";
+import {BrowserRouter} from "react-router-dom";
 
 observe((data) =>
   ReactDOM.render(
     <React.StrictMode>
-
       <DndProvider backend={HTML5Backend}>
-        <App data={data}/>
+        <BrowserRouter>
+          <App data={data}/>
+        </BrowserRouter>
       </DndProvider>
     </React.StrictMode>,
     document.getElementById('root')
