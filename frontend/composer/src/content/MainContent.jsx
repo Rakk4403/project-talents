@@ -5,27 +5,25 @@ import Group from "../component/Group";
 import ControlPanel from "../ControlPanel";
 import {useParams} from "react-router-dom";
 import {connected, getWebsocket, requestList} from "../data/Websocket";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 
 let getProjectIdInterval;
 
 function MainContent({data = {}, children}) {
-  const [loading, setLoading] = useState(true);
   const params = useParams();
   useEffect(() => {
-    setProjectId(params.projectId || '');
     const ws = getWebsocket();
     ws.addEventListener('message', wsHandler);
 
     getProjectIdInterval = setInterval(() => {
-      if (connected()) {
-        setLoading(false);
+      if (connected() && params.projectId) {
         setProjectId(params.projectId || '');
         requestList(params.projectId);
         clearInterval(getProjectIdInterval);
       }
     }, 1000);
-  }, []);
+
+  }, [params.projectId]);
 
   const [{isOver}, drop] = useDrop(() => ({
     accept: ItemTypes.Group,
