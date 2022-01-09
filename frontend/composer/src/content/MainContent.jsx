@@ -1,21 +1,24 @@
 import {useDrop} from "react-dnd";
 import {ItemTypes} from "../data/types";
-import {appendMember, getGroups, setProjectId} from "../data/Data";
+import {appendMember, getGroups, setProjectId, wsHandler} from "../data/Data";
 import Group from "../component/Group";
 import ControlPanel from "../ControlPanel";
 import {useParams} from "react-router-dom";
-import {connected, requestList} from "../data/Websocket";
+import {connected, getWebsocket, requestList} from "../data/Websocket";
 import {useEffect} from "react";
 
 let getProjectIdInterval;
 
 function MainContent({data}) {
   const params = useParams();
-  setProjectId(params.projectId || '');
-
   useEffect(() => {
+    setProjectId(params.projectId || '');
+    const ws = getWebsocket();
+    ws.addEventListener('message', wsHandler);
+
     getProjectIdInterval = setInterval(() => {
       if (connected()) {
+        setProjectId(params.projectId || '');
         requestList(params.projectId);
         clearInterval(getProjectIdInterval);
       }

@@ -1,5 +1,5 @@
 import {ItemTypes} from "./types";
-import {ACTION, createItem, deleteItem, updateItem, ws} from "./Websocket";
+import {createItem, deleteItem, sendProjectId, updateItem} from "./Websocket";
 
 let projectId = '';
 
@@ -11,16 +11,7 @@ export const generateRandomColor = () => {
   return 'rgb(' + r() + "," + r() + "," + r() + ')';
 }
 
-let pingInterval;
-ws.onopen = (e) => {
-  pingInterval = setInterval(() => {
-    ws.send(JSON.stringify({operation: 'ping', action: ACTION}));
-  }, 40000);
-}
-ws.onclose = () => {
-  clearInterval(pingInterval);
-}
-ws.onmessage = (e) => {
+export const wsHandler = (e) => {
   console.log('messageEvent', e)
   if (e.data === 'pong') return;
 
@@ -258,4 +249,5 @@ export const observe = (o) => {
 
 export const setProjectId = (val) => {
   projectId = val;
+  sendProjectId(val);
 }

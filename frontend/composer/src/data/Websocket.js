@@ -1,9 +1,34 @@
 const WSURL = process.env.REACT_APP_WSURL;
 export const ACTION = 'create';
-export const ws = new WebSocket(WSURL);
+let ws = new WebSocket(WSURL);
+
+let pingInterval;
+ws.onopen = (e) => {
+  pingInterval = setInterval(() => {
+    ws.send(JSON.stringify({operation: 'ping', action: ACTION}));
+  }, 40000);
+}
+ws.onclose = () => {
+  clearInterval(pingInterval);
+}
+
+const send = (data) => {
+  if (connected()) {
+    ws.send(JSON.stringify(data));
+    return true;
+  }
+  return false;
+}
+
+export const getWebsocket = () => {
+  return ws;
+}
 
 export const connected = () => {
-  return ws.readyState === 1;
+  if (ws) {
+    return ws.readyState === 1;
+  }
+  return false;
 }
 
 export const createItem = (item) => {
@@ -12,7 +37,7 @@ export const createItem = (item) => {
     action: ACTION,
     item: item,
   }
-  ws.send(JSON.stringify(data))
+  send(data)
 }
 export const updateItem = (item) => {
   const data = {
@@ -20,7 +45,7 @@ export const updateItem = (item) => {
     action: ACTION,
     item: item,
   };
-  ws.send(JSON.stringify(data));
+  send(data)
 }
 export const deleteItem = (item) => {
   const data = {
@@ -28,9 +53,13 @@ export const deleteItem = (item) => {
     action: ACTION,
     item: item,
   };
-  ws.send(JSON.stringify(data));
+  send(data)
 }
 export const requestList = (projectId) => {
   const data = {operation: 'list', action: ACTION, projId: projectId}
-  ws.send(JSON.stringify(data));
+  send(data)
+}
+export const sendProjectId = (projectId) => {
+  const data = {operation: 'landing', action: ACTION, projId: projectId}
+  send(data)
 }
