@@ -5,11 +5,12 @@ import Group from "../component/Group";
 import ControlPanel from "../ControlPanel";
 import {useParams} from "react-router-dom";
 import {connected, getWebsocket, requestList} from "../data/Websocket";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 let getProjectIdInterval;
 
-function MainContent({data}) {
+function MainContent({data = {}, children}) {
+  const [loading, setLoading] = useState(true);
   const params = useParams();
   useEffect(() => {
     setProjectId(params.projectId || '');
@@ -18,6 +19,7 @@ function MainContent({data}) {
 
     getProjectIdInterval = setInterval(() => {
       if (connected()) {
+        setLoading(false);
         setProjectId(params.projectId || '');
         requestList(params.projectId);
         clearInterval(getProjectIdInterval);
@@ -77,6 +79,7 @@ function MainContent({data}) {
         })}
       </div>
       <ControlPanel data={data}/>
+      {children}
     </>
   );
 }

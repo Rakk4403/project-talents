@@ -32,27 +32,15 @@ export const connected = () => {
 }
 
 export const createItem = (item) => {
-  const data = {
-    operation: 'create',
-    action: ACTION,
-    item: item,
-  }
+  const data = {operation: 'create', action: ACTION, item: item}
   send(data)
 }
 export const updateItem = (item) => {
-  const data = {
-    operation: 'update',
-    action: ACTION,
-    item: item,
-  };
+  const data = {operation: 'update', action: ACTION, item: item};
   send(data)
 }
 export const deleteItem = (item) => {
-  const data = {
-    operation: 'delete',
-    action: ACTION,
-    item: item,
-  };
+  const data = {operation: 'delete', action: ACTION, item: item};
   send(data)
 }
 export const requestList = (projectId) => {

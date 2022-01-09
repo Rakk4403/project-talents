@@ -1,5 +1,5 @@
 import {ItemTypes} from "./types";
-import {createItem, deleteItem, sendProjectId, updateItem} from "./Websocket";
+import {createItem, deleteItem, requestList, sendProjectId, updateItem} from "./Websocket";
 
 let projectId = '';
 
@@ -26,6 +26,9 @@ export const wsHandler = (e) => {
     data.items.forEach((item) => {
       Data[item.id] = item;
     })
+  } else if (data.message === 'Internal server error') {
+    requestList(projectId)
+    return;
   }
   emitChange();
 }
