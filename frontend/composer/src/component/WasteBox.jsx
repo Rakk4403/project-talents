@@ -7,7 +7,6 @@ function WasteBox() {
     accept: [ItemTypes.Member, ItemTypes.Group, ItemTypes.Talent],
     drop: (item, monitor) => {
       deleteElem(item.memberId || item.groupId || item.talentId)
-      console.log('dropped', item, monitor)
     },
     collect: monitor => ({
       isOver: !!monitor.isOver(),

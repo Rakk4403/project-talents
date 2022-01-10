@@ -27,11 +27,9 @@ function ProjectSelect({history}) {
         <div style={{textAlign: 'start'}}>
           Join or Create Project<br/>
           Enter project name<br/>
-          
         </div>
         <input onKeyPress={(e) => {
           if (e.key === 'Enter') {
-            console.log(e.target.value);
             navigate(`/p/${e.target.value}`)
           }
         }}/>

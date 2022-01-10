@@ -15,7 +15,6 @@ import BubbleChart from "./BubbleChart";
 import {useState} from "react";
 
 function arrangeLevel(groupId) {
-  console.log('arrangeLevel', groupId)
   if (!groupId) return
   const childrenLevels = getChildrenLevels(groupId);
   childrenLevels.splice(childrenLevels.indexOf(getLevel(groupId)), 1)

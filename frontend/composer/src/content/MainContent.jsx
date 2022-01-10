@@ -38,7 +38,6 @@ function MainContent({data = {}, children}) {
       return item.groupId && item.prevParent !== null;
     },
     collect: monitor => {
-      console.log('monitor', monitor.getItem())
       return {
         isOver: !!monitor.isOver({shallow: true})
           && monitor.getItem().prevParent !== null,

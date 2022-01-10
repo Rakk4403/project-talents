@@ -12,7 +12,6 @@ export const generateRandomColor = () => {
 }
 
 export const wsHandler = (e) => {
-  console.log('messageEvent', e)
   if (e.data === 'pong') return;
 
   const data = JSON.parse(e.data);
@@ -84,7 +83,6 @@ export const getParentId = (elemId) => {
 let observer = null;
 
 const emitChange = () => {
-  console.log('Data', Data);
   observer(Data);
 }
 
@@ -247,7 +245,6 @@ export const reset = () => {
 export const observe = (o) => {
   observer = o;
   emitChange();
-  console.log(Data)
 }
 
 export const setProjectId = (val) => {
