@@ -13,7 +13,10 @@ function ToggleInput({value, elemId, style}) {
     <Fragment>
       {clicked ?
         <input
-          style={{...style}}
+          style={{
+            cursor: 'text',
+            ...style,
+          }}
           autoFocus
           value={newTitle}
           onKeyDown={(e) => {

@@ -80,6 +80,12 @@ function Group({
       isDragging: !!monitor.isDragging()
     })
   }), [level, setLevel])
+
+  function attachRef(el) {
+    !disableDrag && drag(el)
+    !disableDrop && drop(el)
+  }
+
   const groups = groupId ? getGroups(groupId) : [];
   const members = getMembers(groupId);
   const mergedMembers = getMembersMerged(groupId);
@@ -105,7 +111,7 @@ function Group({
   } : {};
   return (
     <div
-      ref={disableDrop ? null : drop}
+      ref={attachRef}
       style={{
         display: 'flex',
         flexFlow: 'column',
@@ -116,11 +122,11 @@ function Group({
         border: '1px solid gray',
         borderRadius: 5,
         backgroundColor: 'white',
+        cursor: 'grab',
         ...style,
       }}
     >
       <div
-        ref={disableDrag ? null : drag}
         style={{
           display: 'flex',
           flexFlow: 'column',
@@ -134,7 +140,7 @@ function Group({
             type='checkbox'
             onClick={() => setScroll(!scroll)}
             alt="Disable scroll"
-          ></input>
+          />
         </div>
         {!disableBubbleChart &&
         <BubbleChart

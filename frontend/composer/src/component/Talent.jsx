@@ -21,10 +21,12 @@ function Talent({title, talentId, color}) {
         border: 'solid 3px',
         borderRadius: 10,
         color: color,
+        backgroundColor: 'white',
         width: 30,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        cursor: 'grab',
       }}
     >
       <div style={{color: 'black'}}>

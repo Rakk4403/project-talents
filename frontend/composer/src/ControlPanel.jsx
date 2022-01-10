@@ -30,6 +30,7 @@ function ControlPanel({data}) {
             height: '3%',
             borderTopRightRadius: 10,
             borderTopLeftRadius: 10,
+            cursor: 'move',
           }}>
         </div>
         <div style={{

@@ -86,7 +86,7 @@ class BubbleChart extends React.Component {
   }
 
   radiusScale = value => {
-    return 10 + value * 5;
+    return 20 + value * 10;
   };
 
   simulatePositions = data => {

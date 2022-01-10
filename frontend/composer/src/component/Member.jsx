@@ -23,10 +23,15 @@ function Member({memberId, title, talentIds, data}) {
     }),
   }), [])
 
+  function attachRef(el) {
+    drag(el)
+    drop(el)
+  }
+
   const talents = Object.values(data).filter((elem) => talentIds.includes(elem.id));
   return (
     <div
-      ref={drop}
+      ref={attachRef}
       style={{
         position: 'relative',
         borderRadius: 10,
@@ -37,13 +42,12 @@ function Member({memberId, title, talentIds, data}) {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'start',
+        cursor: 'grab',
       }}
     >
       <div
-        ref={drag}
         style={{
           width: '100%',
-          height: '100%',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -65,6 +69,7 @@ function Member({memberId, title, talentIds, data}) {
           height: '100%',
           backgroundColor: 'black',
           opacity: 0.5,
+          borderRadius: 10,
         }}
       />}
     </div>
