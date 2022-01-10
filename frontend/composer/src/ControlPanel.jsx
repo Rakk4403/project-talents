@@ -18,6 +18,7 @@ function ControlPanel({data}) {
         boxShadow: "grey 1px 1px 5px",
         backgroundColor: 'aliceblue',
         width: '20%',
+        minWidth: 250,
         height: 800,
         display: 'flex',
         flexFlow: 'column',
@@ -50,7 +51,6 @@ function ControlPanel({data}) {
             <button onClick={() => addElem(ItemTypes.Group)}>Add Group</button>
             <button onClick={() => addElem(ItemTypes.Member)}>Add Member</button>
             <button onClick={() => addElem(ItemTypes.Talent)}>Add Talent</button>
-            <button onClick={() => reset()}>Reset</button>
           </div>
           <div style={{display: 'flex', height: '50%'}}>
             <Group
