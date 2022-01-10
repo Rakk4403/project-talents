@@ -19,6 +19,7 @@ function ControlPanel({data}) {
         backgroundColor: 'aliceblue',
         width: '20%',
         minWidth: 250,
+        maxWidth: 330,
         height: 800,
         display: 'flex',
         flexFlow: 'column',

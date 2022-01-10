@@ -1,6 +1,6 @@
 import {useDrop} from "react-dnd";
 import {ItemTypes} from "../data/types";
-import {appendMember, getGroups, setProjectId, wsHandler} from "../data/Data";
+import {appendMember, getGroups, getProjectName, setProjectId, wsHandler} from "../data/Data";
 import Group from "../component/Group";
 import ControlPanel from "../ControlPanel";
 import {useParams} from "react-router-dom";
@@ -48,36 +48,48 @@ function MainContent({data = {}, children}) {
   const groups = getGroups();
 
   return (
-    <>
-      <div
-        id="playground"
-        ref={drop}
-        style={{
-          padding: 10,
-          opacity: isOver ? 0.3 : 1,
-          backgroundColor: isOver ? 'lightgray' : 'transparent',
-          display: 'flex',
-          flexWrap: 'wrap',
-          width: '80%',
-          gap: 5,
-        }}
-      >
-        {groups.map((group) => {
-          return (
-            <div>
-              <Group
-                data={data}
-                key={group.id}
-                groupId={group.id}
-                title={group.title}
-              />
-            </div>
-          )
-        })}
+    <div style={{
+      display: 'flex',
+      width: '100%',
+    }}>
+      <div style={{
+        display: 'flex',
+        flexFlow: 'column',
+        alignItems: 'start',
+        width: '100%',
+      }}>
+        <h1>{getProjectName()}</h1>
+        <div
+          id="playground"
+          ref={drop}
+          style={{
+            padding: 10,
+            opacity: isOver ? 0.3 : 1,
+            backgroundColor: isOver ? 'lightgray' : 'transparent',
+            display: 'flex',
+            flexWrap: 'wrap',
+            width: '80%',
+            gap: 5,
+          }}
+        >
+          {groups.map((group) => {
+            return (
+              <div>
+                <Group
+                  data={data}
+                  key={group.id}
+                  groupId={group.id}
+                  title={group.title}
+                />
+              </div>
+            )
+          })}
+        </div>
       </div>
-      <ControlPanel data={data}/>
       {children}
-    </>
+
+      <ControlPanel data={data} style={{position: 'absolute'}}/>
+    </div>
   );
 }
 

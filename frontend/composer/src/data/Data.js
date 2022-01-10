@@ -251,3 +251,7 @@ export const setProjectId = (val) => {
   projectId = val;
   sendProjectId(val);
 }
+
+export const getProjectName = () => {
+  return projectId;
+}
