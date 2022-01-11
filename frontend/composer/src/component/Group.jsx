@@ -156,14 +156,18 @@ function Group({
         />
         }
         <div
-          style={{display: 'flex', gap: 5, margin: 5, overflow: 'auto'}}>
+          style={{display: 'flex', margin: 5, overflow: 'auto'}}>
           {groups.map((group) => (
-            <Group
+            <div
               key={group.id}
-              data={data}
-              groupId={group.id}
-              title={group.title}
-            />
+              style={{margin: 5}}
+            >
+              <Group
+                data={data}
+                groupId={group.id}
+                title={group.title}
+              />
+            </div>
           ))}
         </div>
         <div style={{overflow: 'auto', padding: 5}}>

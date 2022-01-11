@@ -69,12 +69,11 @@ function MainContent({data = {}, children}) {
             display: 'flex',
             flexWrap: 'wrap',
             width: '80%',
-            gap: 5,
           }}
         >
           {groups.map((group) => {
             return (
-              <div key={group.id}>
+              <div key={group.id} style={{margin: 5}}>
                 <Group
                   data={data}
                   key={group.id}
