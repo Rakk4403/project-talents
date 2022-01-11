@@ -37,7 +37,7 @@ function Group({
   const [{isOverCurrent}, drop] = useDrop(() => ({
     accept: [ItemTypes.Member, ItemTypes.Group],
     drop: (item, monitor) => {
-      if (monitor.didDrop()) {
+      if (monitor.didDrop() && !monitor.canDrop()) {
         return;
       }
       if (item.type === ItemTypes.Group) {
@@ -57,7 +57,7 @@ function Group({
       }
     },
     canDrop: (item, monitor) => {
-      return item.groupId !== groupId;
+      return item.groupId !== groupId && item.prevParent !== groupId;
     },
     collect: monitor => ({
       isOverCurrent: monitor.isOver({shallow: true}),
@@ -74,6 +74,7 @@ function Group({
     },
     end: (item, monitor) => {
       arrangeLevel(item.prevParent)
+      arrangeLevel(item.id)
     },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging()
