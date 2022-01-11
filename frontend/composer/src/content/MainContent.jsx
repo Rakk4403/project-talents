@@ -74,7 +74,7 @@ function MainContent({data = {}, children}) {
         >
           {groups.map((group) => {
             return (
-              <div>
+              <div key={group.id}>
                 <Group
                   data={data}
                   key={group.id}

@@ -38,11 +38,8 @@ class BubbleChart extends React.Component {
     this.imageRef = React.createRef();
   }
 
-  componentWillMount() {
-    this.mounted = true;
-  }
-
   componentDidMount() {
+    this.mounted = true;
     if (this.props.data.length > 0) {
       this.minValue =
         0.95 *
@@ -212,8 +209,8 @@ class BubbleChart extends React.Component {
 
 BubbleChart.propTypes = {
   data: PropTypes.array,
-  width: PropTypes.number,
-  height: PropTypes.number,
+  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   useLabels: PropTypes.bool
 };
 

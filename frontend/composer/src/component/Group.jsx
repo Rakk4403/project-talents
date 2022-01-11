@@ -64,7 +64,7 @@ function Group({
     }),
   }), [level, setLevel])
 
-  const [{isDragging}, drag] = useDrag(() => ({
+  const [, drag] = useDrag(() => ({
     type: ItemTypes.Group,
     item: {
       groupId: groupId,
@@ -104,7 +104,7 @@ function Group({
     talentCountMap[talentId] += 1;
   })
 
-  const width = style && style.width || 100 + level * 150;
+  const width = (style && style.width) || 100 + level * 150;
   const isOverStyle = isOverCurrent ? {
     backgroundColor: 'lightgray',
   } : {};
@@ -166,7 +166,10 @@ function Group({
         <div style={{overflow: 'auto', padding: 5}}>
           {members && members
             .map((user) => (
-              <div style={{paddingRight: 5, paddingLeft: 5}}>
+              <div
+                key={user.id}
+                style={{paddingRight: 5, paddingLeft: 5}}
+              >
                 <Member
                   key={user.id}
                   title={user.title}

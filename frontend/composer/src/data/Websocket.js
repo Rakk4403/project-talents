@@ -2,22 +2,13 @@ const WSURL = process.env.REACT_APP_WSURL;
 export const ACTION = 'create';
 let ws = new WebSocket(WSURL);
 
-let pingInterval;
-ws.onopen = (e) => {
-  pingInterval = setInterval(() => {
-    ws.send(JSON.stringify({operation: 'ping', action: ACTION}));
-  }, 40000);
-}
-ws.onclose = () => {
-  clearInterval(pingInterval);
-}
-
 const send = (data) => {
   if (connected()) {
     ws.send(JSON.stringify(data));
     return true;
   }
-  return false;
+  ws = new WebSocket(WSURL);
+  return send(data);
 }
 
 export const getWebsocket = () => {
