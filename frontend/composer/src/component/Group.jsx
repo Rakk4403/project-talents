@@ -138,7 +138,7 @@ function Group({
         <div style={{fontWeight: 'bold', padding: 5}}>
           <ToggleInput value={title} elemId={groupId}/>
           <input
-            checked
+            checked={!scroll}
             type='checkbox'
             onClick={() => setScroll(!scroll)}
             alt="Disable scroll"
