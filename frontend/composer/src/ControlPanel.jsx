@@ -48,10 +48,19 @@ function ControlPanel({data}) {
           }}>
             <WasteBox data={data}/>
           </div>
-          <div style={{display: 'flex', justifyContent: 'space-between'}}>
-            <button onClick={() => addElem(ItemTypes.Group)}>Add Group</button>
-            <button onClick={() => addElem(ItemTypes.Member)}>Add Member</button>
-            <button onClick={() => addElem(ItemTypes.Talent)}>Add Talent</button>
+          <div style={{display: 'flex', justifyContent: 'space-between', margin: 5}}>
+            <button
+              style={{height: 40}}
+              onClick={() => addElem(ItemTypes.Group)}>Add Group
+            </button>
+            <button
+              style={{height: 40}}
+              onClick={() => addElem(ItemTypes.Member)}>Add Member
+            </button>
+            <button
+              style={{height: 40}}
+              onClick={() => addElem(ItemTypes.Talent)}>Add Talent
+            </button>
           </div>
           <div style={{display: 'flex', height: '50%'}}>
             <Group
