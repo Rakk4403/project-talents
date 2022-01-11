@@ -32,7 +32,7 @@ function Group({
                  groupId, title, data, style,
                  disableBubbleChart, disableDrag, disableDrop
                }) {
-  const [scroll, setScroll] = useState(true);
+  const [scroll, setScroll] = useState(false);
   const level = getLevel(groupId);
   const [{isOverCurrent}, drop] = useDrop(() => ({
     accept: [ItemTypes.Member, ItemTypes.Group],
@@ -40,6 +40,7 @@ function Group({
       if (monitor.didDrop() && !monitor.canDrop()) {
         return;
       }
+
       if (item.type === ItemTypes.Group) {
         appendMember(groupId, item.groupId)
       } else if (item.type === ItemTypes.Member) {
@@ -137,6 +138,7 @@ function Group({
         <div style={{fontWeight: 'bold', padding: 5}}>
           <ToggleInput value={title} elemId={groupId}/>
           <input
+            checked
             type='checkbox'
             onClick={() => setScroll(!scroll)}
             alt="Disable scroll"
