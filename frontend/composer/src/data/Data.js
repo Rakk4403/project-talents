@@ -13,9 +13,10 @@ export const generateRandomColor = () => {
 
 const cleanupChildren = () => {
   Object.values(Data).forEach((elem) => {
-    let newElem = {...elem};
+    let modified = false;
     if (elem.parent && !Data[elem.parent]) {
-      newElem.parent = ''
+      elem.parent = '';
+      modified = true;
     }
     if (elem.children) {
       const elemsToDelete = [];
@@ -25,10 +26,13 @@ const cleanupChildren = () => {
         }
       })
       elemsToDelete.forEach((delId) => {
-        newElem.children.splice(newElem.children.indexOf(delId), 1);
+        elem.children.splice(elem.children.indexOf(delId), 1);
+        modified = true;
       })
     }
-    updateItem(newElem);
+    if (modified) {
+      updateItem(elem);
+    }
   })
 }
 
