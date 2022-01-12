@@ -11,6 +11,27 @@ export const generateRandomColor = () => {
   return 'rgb(' + r() + "," + r() + "," + r() + ')';
 }
 
+const cleanupChildren = () => {
+  Object.values(Data).forEach((elem) => {
+    let newElem = {...elem};
+    if (elem.parent && !Data[elem.parent]) {
+      newElem.parent = ''
+    }
+    if (elem.children) {
+      const elemsToDelete = [];
+      elem.children.forEach((childId) => {
+        if (!Data[childId]) {
+          elemsToDelete.push(childId)
+        }
+      })
+      elemsToDelete.forEach((delId) => {
+        newElem.children.splice(newElem.children.indexOf(delId), 1);
+      })
+    }
+    updateItem(newElem);
+  })
+}
+
 export const wsHandler = (e) => {
   if (e.data === 'pong') return;
 
@@ -25,6 +46,8 @@ export const wsHandler = (e) => {
     data.items.forEach((item) => {
       Data[item.id] = item;
     })
+
+    cleanupChildren();
   } else if (data.message === 'Internal server error') {
     requestList(projectId)
     return;
