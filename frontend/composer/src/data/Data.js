@@ -282,3 +282,13 @@ export const setProjectId = (val) => {
 export const getProjectName = () => {
   return projectId;
 }
+
+export const getAncestorsId = (elemId) => {
+  let l = [];
+  if (Data[elemId].parent) {
+    const ancestors = getAncestorsId(Data[elemId].parent);
+    l.push(Data[elemId].parent)
+    return l.concat(ancestors)
+  }
+  return [];
+}

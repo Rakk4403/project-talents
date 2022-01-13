@@ -1,7 +1,7 @@
 import {useDrag, useDrop} from "react-dnd";
 import {ItemTypes} from "../data/types";
 import {
-  appendMember,
+  appendMember, getAncestorsId,
   getChildrenLevels,
   getGroups,
   getLevel,
@@ -38,6 +38,9 @@ function Group({
     accept: [ItemTypes.Member, ItemTypes.Group],
     drop: (item, monitor) => {
       if (monitor.didDrop() && !monitor.canDrop()) {
+        return;
+      }
+      if (getAncestorsId(groupId).includes(item.groupId)) {
         return;
       }
 
