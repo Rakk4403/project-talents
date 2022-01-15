@@ -5,12 +5,13 @@ import Group from "../component/Group";
 import ControlPanel from "../ControlPanel";
 import {useParams} from "react-router-dom";
 import {connected, getWebsocket, requestList} from "../data/Websocket";
-import {useEffect} from "react";
+import {useEffect, useRef, useState} from "react";
 
 let getProjectIdInterval;
 
 function MainContent({data = {}, children}) {
   const params = useParams();
+  const [zoomValue, setZoomValue] = useState(1);
   useEffect(() => {
     const ws = getWebsocket();
     ws.addEventListener('message', wsHandler);
@@ -46,7 +47,13 @@ function MainContent({data = {}, children}) {
   }), [])
 
   const groups = getGroups();
-
+  const zoomable = useRef(null);
+  useEffect(() => {
+    if (zoomable.current &&
+      window.innerWidth < zoomable.current.scrollWidth) {
+      setZoomValue(window.innerWidth / zoomable.current.scrollWidth)
+    }
+  }, [zoomable.current])
   return (
     <div style={{
       display: 'flex',
@@ -59,30 +66,37 @@ function MainContent({data = {}, children}) {
         width: '100%',
       }}>
         <h1>{getProjectName()}</h1>
-        <div
-          id="playground"
-          ref={drop}
-          style={{
-            padding: 10,
-            opacity: isOver ? 0.3 : 1,
-            backgroundColor: isOver ? 'lightgray' : 'transparent',
-            display: 'flex',
-            flexWrap: 'wrap',
-            width: '80%',
-          }}
+        <div id='zoomable'
+             ref={zoomable}
+             style={{
+               zoom: zoomValue
+             }}
         >
-          {groups.map((group) => {
-            return (
-              <div key={group.id} style={{margin: 5}}>
-                <Group
-                  data={data}
-                  key={group.id}
-                  groupId={group.id}
-                  title={group.title}
-                />
-              </div>
-            )
-          })}
+          <div
+            id="playground"
+            ref={drop}
+            style={{
+              padding: 10,
+              opacity: isOver ? 0.3 : 1,
+              backgroundColor: isOver ? 'lightgray' : 'transparent',
+              display: 'flex',
+              flexWrap: 'wrap',
+              width: '80%',
+            }}
+          >
+            {groups.map((group) => {
+              return (
+                <div key={group.id} style={{margin: 5}}>
+                  <Group
+                    data={data}
+                    key={group.id}
+                    groupId={group.id}
+                    title={group.title}
+                  />
+                </div>
+              )
+            })}
+          </div>
         </div>
       </div>
       {children}
