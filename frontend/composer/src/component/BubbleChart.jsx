@@ -176,11 +176,11 @@ class BubbleChart extends React.Component {
             fontSize={`${fontSize}px`}
             fontWeight="bold"
             onMouseOver={() => this.setState({tooltip: item})}
-            onMouseOut={() => this.setState({tooltip: null})}
           >
-            {this.state.tooltip && this.state.tooltip.title === item.title
-              ? `${item.title} ${this.state.tooltip.v}`
-              : item.title}
+            <tspan x="0">{item.title}</tspan>
+            {this.state.tooltip
+            && this.state.tooltip.title === item.title
+            && <tspan x="0" dy="1.2em">{this.state.tooltip.v}</tspan>}
           </text>
         </g>
       );
