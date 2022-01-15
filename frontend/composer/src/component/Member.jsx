@@ -7,7 +7,11 @@ import Circle from "./Circle";
 function Member({memberId, title, talentIds, data}) {
   const [{isDragging}, drag] = useDrag(() => ({
     type: ItemTypes.Member,
-    item: {memberId: memberId, groupId: data[memberId].parent, type: ItemTypes.Member},
+    item: {
+      memberId: memberId,
+      groupId: data[memberId].parent,
+      type: ItemTypes.Member
+    },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging()
     })

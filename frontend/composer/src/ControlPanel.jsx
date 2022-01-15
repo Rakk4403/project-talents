@@ -9,7 +9,10 @@ function ControlPanel({data}) {
   const keys = Object.keys(data);
   const talentKeys = keys.filter((key) => data[key].type === ItemTypes.Talent);
   return (
-    <Draggable handle=".panelHandle">
+    <Draggable
+      handle=".panelHandle"
+      style={{position: 'fixed'}}
+    >
       <div style={{
         border: 'solid',
         borderColor: 'lightgray',

@@ -40,11 +40,10 @@ function Group({
       if (monitor.didDrop() && !monitor.canDrop()) {
         return;
       }
-      if (getAncestorsId(groupId).includes(item.groupId)) {
-        return;
-      }
-
       if (item.type === ItemTypes.Group) {
+        if (getAncestorsId(groupId).includes(item.groupId)) {
+          return;
+        }
         appendMember(groupId, item.groupId)
       } else if (item.type === ItemTypes.Member) {
         appendMember(groupId, item.memberId)
@@ -121,7 +120,6 @@ function Group({
         flexFlow: 'column',
         position: 'relative',
         minWidth: 200,
-        width: scroll ? width : '100%',
         minHeight: 300,
         border: '1px solid gray',
         borderRadius: 5,
@@ -136,6 +134,7 @@ function Group({
           flexFlow: 'column',
           minHeight: 300,
           gap: 5,
+          alignItems: 'center',
           ...isOverStyle,
         }}>
         <div style={{fontWeight: 'bold', padding: 5}}>
@@ -173,12 +172,12 @@ function Group({
             </div>
           ))}
         </div>
-        <div style={{overflow: 'auto', padding: 5}}>
+        <div style={{overflow: 'auto', width: '95%'}}>
           {members && members
             .map((user) => (
               <div
                 key={user.id}
-                style={{paddingRight: 5, paddingLeft: 5}}
+                style={{width: '100%'}}
               >
                 <Member
                   key={user.id}

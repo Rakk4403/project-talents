@@ -50,8 +50,16 @@ function MainContent({data = {}, children}) {
   const zoomable = useRef(null);
   useEffect(() => {
     if (zoomable.current &&
-      window.innerWidth < zoomable.current.scrollWidth) {
-      setZoomValue(window.innerWidth / zoomable.current.scrollWidth)
+      (window.innerWidth < zoomable.current.scrollWidth
+        || window.innerHeight < zoomable.current.scrollHeight)) {
+      const panelWidth = 250;
+      const widthRatio = window.innerWidth / (zoomable.current.scrollWidth + panelWidth);
+      const heightRatio = window.innerHeight / zoomable.current.scrollHeight;
+      console.log(window.innerWidth, zoomable.current.scrollWidth,
+        window.innerHeight, zoomable.current.scrollHeight,
+        widthRatio, heightRatio
+      )
+      setZoomValue(widthRatio < heightRatio ? widthRatio : heightRatio)
     }
   }, [zoomable.current])
   return (
@@ -66,11 +74,12 @@ function MainContent({data = {}, children}) {
         width: '100%',
       }}>
         <h1>{getProjectName()}</h1>
-        <div id='zoomable'
-             ref={zoomable}
-             style={{
-               zoom: zoomValue
-             }}
+        <div
+          id='zoomable'
+          ref={zoomable}
+          style={{
+            zoom: zoomValue
+          }}
         >
           <div
             id="playground"
@@ -100,8 +109,9 @@ function MainContent({data = {}, children}) {
         </div>
       </div>
       {children}
-
-      <ControlPanel data={data} style={{position: 'absolute'}}/>
+      <div style={{float: 'right'}}>
+        <ControlPanel data={data}/>
+      </div>
     </div>
   );
 }
