@@ -135,6 +135,7 @@ function Group({
           display: 'flex',
           minHeight: 300,
           gap: 5,
+          justifyContent: 'space-between',
           ...isOverStyle,
         }}>
         {title && !disableBubbleChart &&
