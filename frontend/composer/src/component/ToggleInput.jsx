@@ -20,6 +20,7 @@ function ToggleInput({value, elemId, style}) {
           autoFocus
           value={newTitle}
           onKeyDown={(e) => {
+            e.stopPropagation()
             if (e.code === 'Enter') {
               if (newTitle) {
                 modifyElemTitle(elemId, newTitle);
@@ -31,16 +32,23 @@ function ToggleInput({value, elemId, style}) {
               setClicked(false);
             }
           }}
-          onBlur={() => {
+          onBlur={(e) => {
+            e.stopPropagation()
             if (newTitle) {
               modifyElemTitle(elemId, newTitle);
               setClicked(false);
             }
           }}
-          onChange={(e) => setNewTitle(e.target.value)}
+          onChange={(e) => {
+            e.stopPropagation()
+            setNewTitle(e.target.value)
+          }}
         />
         :
-        <span onClick={() => setClicked(true)}>{newTitle}</span>
+        <span onClick={(e) => {
+          e.stopPropagation();
+          setClicked(true)
+        }}>{newTitle}</span>
       }
     </Fragment>
   )

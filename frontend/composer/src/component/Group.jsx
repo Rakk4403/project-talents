@@ -33,7 +33,6 @@ function Group({
                  groupId, title, data, style,
                  disableBubbleChart, disableDrag, disableDrop
                }) {
-  const [scroll, setScroll] = useState(false);
   const level = getLevel(groupId);
   const [{isOverCurrent}, drop] = useDrop(() => ({
     accept: [ItemTypes.Member, ItemTypes.Group],
@@ -136,19 +135,14 @@ function Group({
           display: 'flex',
           minHeight: 300,
           gap: 5,
-          alignItems: 'center',
           ...isOverStyle,
         }}>
-        <div>
-          <div style={{fontWeight: 'bold', padding: 5}}>
+        <div style={{display: 'flex', flexFlow: 'column', justifyContent: 'start'}}>
+          {title &&
+          <div style={{display: 'flex', alignItems: 'left', fontWeight: 'bold', padding: 5}}>
             <ToggleInput value={title} elemId={groupId}/>
-            <input
-              checked={!scroll}
-              type='checkbox'
-              onClick={() => setScroll(!scroll)}
-              alt="Disable scroll"
-            />
           </div>
+          }
           {!disableBubbleChart &&
           <BubbleChart
             useLabels
@@ -161,9 +155,7 @@ function Group({
           />
           }
         </div>
-        <div
-          style={{margin: 5}}
-        >
+        <div>
           {groups.map((group) => {
             console.log('expendedGroups', expendedGroups);
             if (expendedGroups.includes(group.id)) {
@@ -187,12 +179,14 @@ function Group({
               )
             } else {
               return (
-                <div onClick={(e) => {
-                  e.stopPropagation();
-                  const newGroups = [...expendedGroups]
-                  newGroups.push(group.id)
-                  setExpendedGroups(newGroups)
-                }}>
+                <div
+                  style={{margin: 5}}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const newGroups = [...expendedGroups]
+                    newGroups.push(group.id)
+                    setExpendedGroups(newGroups)
+                  }}>
                   <MinimizedGroup data={data} groupId={group.id} title={group.title}/>
                 </div>
               )

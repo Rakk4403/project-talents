@@ -122,7 +122,7 @@ function MinimizedGroup({
           ...isOverStyle,
         }}>
         <div style={{fontWeight: 'bold', padding: 5}}>
-          <ToggleInput value={title} elemId={groupId}/>
+          {title}
         </div>
       </div>
     </div>
