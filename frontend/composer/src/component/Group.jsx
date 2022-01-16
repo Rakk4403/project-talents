@@ -13,6 +13,7 @@ import Member from "./Member";
 import ToggleInput from "./ToggleInput";
 import BubbleChart from "./BubbleChart";
 import {useState} from "react";
+import MinimizedGroup from "./MinimizedGroup";
 
 function arrangeLevel(groupId) {
   if (!groupId) return
@@ -89,6 +90,8 @@ function Group({
     !disableDrop && drop(el)
   }
 
+  const [expendedGroups, setExpendedGroups] = useState([]);
+
   const groups = groupId ? getGroups(groupId) : [];
   const members = getMembers(groupId);
   const mergedMembers = getMembersMerged(groupId);
@@ -131,46 +134,70 @@ function Group({
       <div
         style={{
           display: 'flex',
-          flexFlow: 'column',
           minHeight: 300,
           gap: 5,
           alignItems: 'center',
           ...isOverStyle,
         }}>
-        <div style={{fontWeight: 'bold', padding: 5}}>
-          <ToggleInput value={title} elemId={groupId}/>
-          <input
-            checked={!scroll}
-            type='checkbox'
-            onClick={() => setScroll(!scroll)}
-            alt="Disable scroll"
+        <div>
+          <div style={{fontWeight: 'bold', padding: 5}}>
+            <ToggleInput value={title} elemId={groupId}/>
+            <input
+              checked={!scroll}
+              type='checkbox'
+              onClick={() => setScroll(!scroll)}
+              alt="Disable scroll"
+            />
+          </div>
+          {!disableBubbleChart &&
+          <BubbleChart
+            useLabels
+            data={Object.keys(talentCountMap)
+              .map((key) => ({
+                v: talentCountMap[key],
+                title: data[key].title,
+                color: data[key].color,
+              }))}
           />
+          }
         </div>
-        {!disableBubbleChart &&
-        <BubbleChart
-          useLabels
-          data={Object.keys(talentCountMap)
-            .map((key) => ({
-              v: talentCountMap[key],
-              title: data[key].title,
-              color: data[key].color,
-            }))}
-        />
-        }
         <div
-          style={{display: 'flex', margin: 5, overflow: 'auto'}}>
-          {groups.map((group) => (
-            <div
-              key={group.id}
-              style={{margin: 5}}
-            >
-              <Group
-                data={data}
-                groupId={group.id}
-                title={group.title}
-              />
-            </div>
-          ))}
+          style={{margin: 5}}
+        >
+          {groups.map((group) => {
+            console.log('expendedGroups', expendedGroups);
+            if (expendedGroups.includes(group.id)) {
+              return (
+                <div
+                  key={group.id}
+                  style={{margin: 5}}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const newGroups = [...expendedGroups]
+                    newGroups.splice(newGroups.indexOf(group.id), 1)
+                    setExpendedGroups(newGroups)
+                  }}
+                >
+                  <Group
+                    data={data}
+                    groupId={group.id}
+                    title={group.title}
+                  />
+                </div>
+              )
+            } else {
+              return (
+                <div onClick={(e) => {
+                  e.stopPropagation();
+                  const newGroups = [...expendedGroups]
+                  newGroups.push(group.id)
+                  setExpendedGroups(newGroups)
+                }}>
+                  <MinimizedGroup data={data} groupId={group.id} title={group.title}/>
+                </div>
+              )
+            }
+          })}
         </div>
         <div style={{overflow: 'auto', width: '95%'}}>
           {members && members
