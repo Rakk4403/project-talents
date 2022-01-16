@@ -83,7 +83,10 @@ class BubbleChart extends React.Component {
   }
 
   radiusScale = value => {
-    return 30 + value * 5;
+    const {data} = this.props;
+    const sumValue = d3.sum(data, item => item.v)
+    const ratio = 1 / sumValue.toString().length
+    return (30 + value * 5) * ratio;
   };
 
   simulatePositions = data => {
