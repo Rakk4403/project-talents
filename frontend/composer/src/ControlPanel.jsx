@@ -65,6 +65,7 @@ function ControlPanel({data}) {
               onClick={() => addElem(ItemTypes.Talent)}>Add Talent
             </button>
           </div>
+          <span style={{fontWeight: 'bold'}}>Members</span>
           <div style={{display: 'flex', height: '50%'}}>
             <Group
               disableBubbleChart
@@ -72,9 +73,9 @@ function ControlPanel({data}) {
               disableDrop
               style={{height: '100%', width: '100%'}}
               data={data}
-              title={'Member Basket'}
             />
           </div>
+          <span style={{fontWeight: 'bold'}}>Talents</span>
           <div style={{display: 'flex', flexWrap: 'wrap', overflow: 'auto'}}>
             {talentKeys.map((key) =>
               <Talent
