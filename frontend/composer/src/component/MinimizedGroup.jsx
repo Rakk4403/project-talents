@@ -118,7 +118,7 @@ function MinimizedGroup({
           flexFlow: 'column',
           //minHeight: 300,
           gap: 5,
-          alignItems: 'center',
+          alignItems: 'start',
           ...isOverStyle,
         }}>
         <div style={{fontWeight: 'bold', padding: 5}}>

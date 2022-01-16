@@ -137,7 +137,8 @@ function Group({
           gap: 5,
           ...isOverStyle,
         }}>
-        <div style={{display: 'flex', flexFlow: 'column', justifyContent: 'start'}}>
+        {title && !disableBubbleChart &&
+        <div style={{display: 'flex', flexFlow: 'column', justifyContent: 'start', width: '50%'}}>
           {title &&
           <div style={{display: 'flex', alignItems: 'left', fontWeight: 'bold', padding: 5}}>
             <ToggleInput value={title} elemId={groupId}/>
@@ -155,61 +156,63 @@ function Group({
           />
           }
         </div>
-        <div>
-          {groups.map((group) => {
-            console.log('expendedGroups', expendedGroups);
-            if (expendedGroups.includes(group.id)) {
-              return (
+        }
+        <div style={{display: 'flex'}}>
+          <div style={{overflow: 'auto'}}>
+            {members && members
+              .map((user) => (
                 <div
-                  key={group.id}
-                  style={{margin: 5}}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    const newGroups = [...expendedGroups]
-                    newGroups.splice(newGroups.indexOf(group.id), 1)
-                    setExpendedGroups(newGroups)
-                  }}
-                >
-                  <Group
-                    data={data}
-                    groupId={group.id}
-                    title={group.title}
-                  />
-                </div>
-              )
-            } else {
-              return (
-                <div
-                  style={{margin: 5}}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    const newGroups = [...expendedGroups]
-                    newGroups.push(group.id)
-                    setExpendedGroups(newGroups)
-                  }}>
-                  <MinimizedGroup data={data} groupId={group.id} title={group.title}/>
-                </div>
-              )
-            }
-          })}
-        </div>
-        <div style={{overflow: 'auto', width: '95%'}}>
-          {members && members
-            .map((user) => (
-              <div
-                key={user.id}
-                style={{width: '100%'}}
-              >
-                <Member
                   key={user.id}
-                  title={user.title}
-                  memberId={user.id}
-                  talentIds={user.children}
-                  data={data}
+                  style={{width: '100%'}}
                 >
-                </Member>
-              </div>
-            ))}
+                  <Member
+                    key={user.id}
+                    title={user.title}
+                    memberId={user.id}
+                    talentIds={user.children}
+                    data={data}
+                  >
+                  </Member>
+                </div>
+              ))}
+          </div>
+          <div>
+            {groups.map((group) => {
+              if (expendedGroups.includes(group.id)) {
+                return (
+                  <div
+                    key={group.id}
+                    style={{margin: 5}}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const newGroups = [...expendedGroups]
+                      newGroups.splice(newGroups.indexOf(group.id), 1)
+                      setExpendedGroups(newGroups)
+                    }}
+                  >
+                    <Group
+                      data={data}
+                      groupId={group.id}
+                      title={group.title}
+                    />
+                  </div>
+                )
+              } else {
+                return (
+                  <div
+                    style={{margin: 5}}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const newGroups = [...expendedGroups]
+                      newGroups.push(group.id)
+                      setExpendedGroups(newGroups)
+                    }}>
+                    <MinimizedGroup data={data} groupId={group.id} title={group.title}/>
+                  </div>
+                )
+              }
+            })}
+          </div>
         </div>
       </div>
     </div>
