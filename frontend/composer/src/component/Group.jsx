@@ -122,7 +122,6 @@ function Group({
         flexFlow: 'column',
         position: 'relative',
         minWidth: 200,
-        minHeight: 300,
         border: '1px solid gray',
         borderRadius: 5,
         backgroundColor: 'white',
@@ -133,7 +132,6 @@ function Group({
       <div
         style={{
           display: 'flex',
-          minHeight: 300,
           gap: 5,
           justifyContent: 'space-between',
           ...isOverStyle,
@@ -146,20 +144,22 @@ function Group({
           </div>
           }
           {!disableBubbleChart &&
-          <BubbleChart
-            useLabels
-            data={Object.keys(talentCountMap)
-              .map((key) => ({
-                v: talentCountMap[key],
-                title: data[key].title,
-                color: data[key].color,
-              }))}
-          />
+          <div onClick={(e) => e.stopPropagation()}>
+            <BubbleChart
+              useLabels
+              data={Object.keys(talentCountMap)
+                .map((key) => ({
+                  v: talentCountMap[key],
+                  title: data[key].title,
+                  color: data[key].color,
+                }))}
+            />
+          </div>
           }
         </div>
         }
-        <div style={{display: 'flex'}}>
-          <div style={{overflow: 'auto'}}>
+        <div style={{display: 'flex', flexFlow: 'column', minWidth: '40%'}}>
+          <div style={{overflowY: 'auto', minWidth: 100, maxWidth: 250}}>
             {members && members
               .map((user) => (
                 <div
@@ -183,7 +183,7 @@ function Group({
                 return (
                   <div
                     key={group.id}
-                    style={{margin: 5}}
+                    style={{margin: 5, minWidth: 400}}
                     onClick={(e) => {
                       e.stopPropagation();
                       const newGroups = [...expendedGroups]

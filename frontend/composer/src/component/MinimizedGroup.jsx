@@ -103,8 +103,6 @@ function MinimizedGroup({
         display: 'flex',
         flexFlow: 'column',
         position: 'relative',
-        minWidth: 200,
-        //minHeight: 300,
         border: '1px solid gray',
         borderRadius: 5,
         backgroundColor: 'white',
