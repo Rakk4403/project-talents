@@ -14,6 +14,7 @@ import ToggleInput from "./ToggleInput";
 import BubbleChart from "./BubbleChart";
 import {useState} from "react";
 import MinimizedGroup from "./MinimizedGroup";
+import {isMobile} from "../util/utils";
 
 function arrangeLevel(groupId) {
   if (!groupId) return
@@ -137,28 +138,27 @@ function Group({
           ...isOverStyle,
         }}>
         {title && !disableBubbleChart &&
-        <div style={{display: 'flex', flexFlow: 'column', justifyContent: 'start', width: '50%'}}>
+        <div style={{display: 'flex', flexFlow: 'column', justifyContent: 'start'}}>
           {title &&
           <div style={{display: 'flex', alignItems: 'left', fontWeight: 'bold', padding: 5}}>
             <ToggleInput value={title} elemId={groupId}/>
           </div>
           }
           {!disableBubbleChart &&
-          <div onClick={(e) => e.stopPropagation()}>
-            <BubbleChart
-              useLabels
-              data={Object.keys(talentCountMap)
-                .map((key) => ({
-                  v: talentCountMap[key],
-                  title: data[key].title,
-                  color: data[key].color,
-                }))}
-            />
-          </div>
+          <BubbleChart
+            useLabels
+            data={Object.keys(talentCountMap)
+              .map((key) => ({
+                v: talentCountMap[key],
+                title: data[key].title,
+                color: data[key].color,
+              }))}
+            onClick={(e) => isMobile() && e.stopPropagation()}
+          />
           }
         </div>
         }
-        <div style={{display: 'flex', flexFlow: 'column', minWidth: '40%'}}>
+        <div style={{display: 'flex', flexFlow: 'column', minWidth: 250}}>
           <div style={{overflowY: 'auto', minWidth: 100, maxWidth: 250}}>
             {members && members
               .map((user) => (

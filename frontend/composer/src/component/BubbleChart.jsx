@@ -196,6 +196,7 @@ class BubbleChart extends React.Component {
       const height = this.imageRef.current && this.imageRef.current.getBBox().height * 1.2;
       return (
         <div
+          {...this.props}
           ref={this.ref}
           style={{
             width: width,
