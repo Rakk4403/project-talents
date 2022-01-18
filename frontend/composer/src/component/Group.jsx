@@ -158,7 +158,7 @@ function Group({
           }
         </div>
         }
-        <div style={{display: 'flex', flexFlow: 'column', minWidth: 250}}>
+        <div style={{display: 'flex', flexFlow: 'column', minWidth: 200}}>
           <div style={{overflowY: 'auto', minWidth: 100, maxWidth: 250}}>
             {members && members
               .map((user) => (
