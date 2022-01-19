@@ -2,13 +2,26 @@ const WSURL = process.env.REACT_APP_WSURL;
 export const ACTION = 'create';
 let ws = new WebSocket(WSURL);
 
-const send = (data) => {
+const connect = () => {
+  return new Promise((res, rej) => {
+    ws = new WebSocket(WSURL);
+    ws.onopen = () => {
+      console.log('websocket connected', ws)
+      res(ws);
+    }
+    ws.onerror = (err) => {
+      rej(err)
+    }
+  });
+}
+
+const send = async (data) => {
   if (connected()) {
     ws.send(JSON.stringify(data));
-    return true;
+    return;
   }
-  ws = new WebSocket(WSURL);
-  return send(data);
+  ws = await connect()
+  await send(data)
 }
 
 export const getWebsocket = () => {
