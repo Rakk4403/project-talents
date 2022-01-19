@@ -2,7 +2,7 @@ import {useDrag} from "react-dnd";
 import {ItemTypes} from "../data/types";
 import ToggleInput from "./ToggleInput";
 
-function Talent({title, talentId, color}) {
+function Talent({title, talentId, color, style, tooltip}) {
   const [{isDragging}, drag] = useDrag(() => ({
     type: ItemTypes.Talent,
     item: {talentId: talentId},
@@ -27,7 +27,10 @@ function Talent({title, talentId, color}) {
         justifyContent: 'center',
         alignItems: 'center',
         cursor: 'grab',
+
+        ...style,
       }}
+      title={tooltip}
     >
       <div style={{color: 'black'}}>
         <ToggleInput style={{width: 40}} elemId={talentId} value={title}/>

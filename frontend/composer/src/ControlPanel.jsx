@@ -83,6 +83,12 @@ function ControlPanel({data}) {
                 title={data[key].title}
                 color={data[key].color}
                 talentId={key}
+                style={{
+                  height: 30,
+                  flexWrap: 'wrap',
+                  overflow: 'hidden',
+                }}
+                tooltip={data[key].title}
               />)}
           </div>
         </div>
