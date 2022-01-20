@@ -22,20 +22,22 @@ function ControlPanel({data}) {
       }}
     >
       <div>
-        <div style={{width: 50, height: 50,}}>
+        <div style={{width: 50, height: 50, display: openDetails && 'none'}}>
           <button
             onClick={(e) => {
               e.stopPropagation();
               toggleDetails();
             }}
-          >확장축소
+          >Open
           </button>
         </div>
         <details open={openDetails}>
-          <summary style={{listStyle: 'none', display: openDetails && 'none'}}/>
+          <summary style={{listStyle: 'none', display: 'none'}}/>
           <div
             className="panelHandle"
             style={{
+              display: 'flex',
+              justifyContent: 'right',
               backgroundColor: 'gray',
               height: 20,
               width: 250,
@@ -46,6 +48,13 @@ function ControlPanel({data}) {
               cursor: 'move',
               listStyle: 'none',
             }}>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleDetails();
+              }}
+            >Close
+            </button>
           </div>
           <div style={{
             border: 'solid',
