@@ -111,7 +111,6 @@ function Group({
     talentCountMap[talentId] += 1;
   })
 
-  const width = (style && style.width) || 100 + level * 150;
   const isOverStyle = isOverCurrent ? {
     backgroundColor: 'lightgray',
   } : {};
@@ -123,6 +122,7 @@ function Group({
         flexFlow: 'column',
         position: 'relative',
         minWidth: 200,
+        width: 'fit-content',
         border: '1px solid gray',
         borderRadius: 5,
         backgroundColor: 'white',
@@ -134,7 +134,6 @@ function Group({
         style={{
           display: 'flex',
           gap: 5,
-          justifyContent: 'space-between',
           ...isOverStyle,
         }}>
         {title && !disableBubbleChart &&
