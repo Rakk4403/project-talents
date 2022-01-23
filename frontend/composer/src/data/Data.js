@@ -11,6 +11,25 @@ export const generateRandomColor = () => {
   return 'rgb(' + r() + "," + r() + "," + r() + ')';
 }
 
+const createElem = (itemType) => {
+  let prefix = 'Group';
+  if (itemType === ItemTypes.Member) {
+    prefix = 'Member';
+  } else if (itemType === ItemTypes.Talent) {
+    prefix = 'Talent';
+  }
+  const elemCount = Object.values(Data)
+    .filter((elem) => elem.type === itemType)
+    .length
+  return {
+    title: `${prefix}${elemCount}`,
+    type: itemType,
+    children: [],
+    color: generateRandomColor(),
+    projId: projectId,
+  };
+}
+
 const cleanupChildren = () => {
   Object.values(Data).forEach((elem) => {
     let modified = false;
@@ -201,22 +220,7 @@ export const appendTalent = (memberId, talentId) => {
 }
 
 export const addElem = (itemType) => {
-  let prefix = 'Group';
-  if (itemType === ItemTypes.Member) {
-    prefix = 'Member';
-  } else if (itemType === ItemTypes.Talent) {
-    prefix = 'Talent';
-  }
-  const elemCount = Object.values(Data)
-    .filter((elem) => elem.type === itemType)
-    .length
-  const elem = {
-    title: `${prefix}${elemCount}`,
-    type: itemType,
-    children: [],
-    color: generateRandomColor(),
-    projId: projectId,
-  };
+  const elem = createElem(itemType);
   createItem(elem)
 }
 
@@ -291,4 +295,67 @@ export const getAncestorsId = (elemId) => {
     return l.concat(ancestors)
   }
   return [];
+}
+
+const generateDummyData = () => {
+  const importDummy = (itemType, count) => {
+    const elems = [...Array(count).keys()].map((idx) => {
+      const elem = createElem(itemType);
+      elem.id = generateRandomId();
+      elem.title = `${itemType}${idx}`;
+      return elem;
+    })
+    elems.forEach((elem) => {
+      Data[elem.id] = elem;
+    })
+  }
+
+  importDummy(ItemTypes.Group, 10)
+  importDummy(ItemTypes.Talent, 8)
+  importDummy(ItemTypes.Member, 100)
+
+  // groups parent 셋팅
+  const setRandomParent = (srcType) => {
+    const getOrphans = (type) => {
+      return Object.values(Data)
+        .filter((elem) => elem.type === type)
+        .filter((elem) => elem.title !== 'group0')
+        .filter((elem) => !elem.parent)
+    };
+
+    const setParents = (elemId) => {
+      const targets = getOrphans(srcType)
+      targets.forEach((elem) => {
+        if (Math.random() > 0.5) {
+          const groupId = elemId;
+          const memberId = elem.id
+          if (groupId && hasChild(groupId, memberId)) {
+            return;
+          }
+          const prevGroupId = getParentId(memberId);
+          removeChild(prevGroupId, memberId);
+          updateItem(Data[prevGroupId])
+          addChild(groupId, memberId);
+          changeParent(memberId, groupId);
+        }
+      })
+      Data[elemId].children.forEach((childId) => {
+        setParents(childId);
+      })
+    }
+    const initElem = Object.values(Data)
+      .filter((elem) => elem.title === 'group0')[0]
+    setParents(initElem.id)
+  }
+
+  setRandomParent(ItemTypes.Group, ItemTypes.Group)
+  Object.values(Data)
+    .filter((elem) => elem.title === 'group0')[0].parent = null;
+
+  //setRandomParent(ItemTypes.Member, ItemTypes.Group)
+  //setRandomParent(ItemTypes.Talent, ItemTypes.Member)
+}
+
+if (process.env.REACT_APP_DEBUG) {
+  generateDummyData();
 }
