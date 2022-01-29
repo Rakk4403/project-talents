@@ -1,8 +1,8 @@
-import WasteBox from "./component/WasteBox";
-import {addElem} from "./data/Data";
-import {ItemTypes} from "./data/types";
-import Group from "./component/Group";
-import Talent from "./component/Talent";
+import WasteBox from "../component/WasteBox";
+import {addElem} from "../data/Data";
+import {ItemTypes} from "../data/types";
+import Group from "../component/Group";
+import Talent from "../component/Talent";
 import Draggable from "react-draggable";
 import {useState} from "react";
 

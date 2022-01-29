@@ -1,4 +1,5 @@
 const WSURL = process.env.REACT_APP_WSURL;
+const DEBUG = process.env.REACT_APP_DEBUG;
 export const ACTION = 'create';
 let ws = new WebSocket(WSURL);
 
@@ -16,6 +17,7 @@ const connect = () => {
 }
 
 const send = async (data) => {
+  if (DEBUG) return;
   if (connected()) {
     ws.send(JSON.stringify(data));
     return;

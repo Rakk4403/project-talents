@@ -2,10 +2,12 @@ import {useDrop} from "react-dnd";
 import {ItemTypes} from "../data/types";
 import {appendMember, getGroups, getProjectName, setProjectId, wsHandler} from "../data/Data";
 import Group from "../component/Group";
-import ControlPanel from "../ControlPanel";
+import ControlPanel from "./ControlPanel";
 import {useParams} from "react-router-dom";
 import {connected, getWebsocket, requestList} from "../data/Websocket";
 import {useEffect, useRef, useState} from "react";
+import {isMobile} from "../util/utils";
+import MobileControlPanel from "./MobileControlPanel";
 
 let getProjectIdInterval;
 
@@ -63,56 +65,60 @@ function MainContent({data = {}, children}) {
     }
   }, [zoomable.current])
   return (
-    <div style={{
-      display: 'flex',
-      width: '100%',
-    }}>
+    <>
       <div style={{
         display: 'flex',
-        flexFlow: 'column',
-        alignItems: 'start',
         width: '100%',
+        height: window.innerHeight - 500,
       }}>
-        <h1>{getProjectName()}</h1>
-        <div
-          id='zoomable'
-          ref={zoomable}
-          style={{
-            zoom: zoomValue
-          }}
-        >
+        <div style={{
+          display: 'flex',
+          flexFlow: 'column',
+          alignItems: 'start',
+          width: '100%',
+        }}>
+          <h1>{getProjectName()}</h1>
           <div
-            id="playground"
-            ref={drop}
+            id='zoomable'
+            ref={zoomable}
             style={{
-              padding: 10,
-              opacity: isOver ? 0.3 : 1,
-              backgroundColor: isOver ? 'lightgray' : 'transparent',
-              display: 'flex',
-              flexWrap: 'wrap',
-              width: '80%',
+              zoom: zoomValue
             }}
           >
-            {groups.map((group) => {
-              return (
-                <div key={group.id} style={{margin: 5}}>
-                  <Group
-                    data={data}
-                    key={group.id}
-                    groupId={group.id}
-                    title={group.title}
-                  />
-                </div>
-              )
-            })}
+            <div
+              id="playground"
+              ref={drop}
+              style={{
+                padding: 10,
+                opacity: isOver ? 0.3 : 1,
+                backgroundColor: isOver ? 'lightgray' : 'transparent',
+                display: 'flex',
+                flexWrap: 'wrap',
+                width: '80%',
+              }}
+            >
+              {groups.map((group) => {
+                return (
+                  <div key={group.id} style={{margin: 5}}>
+                    <Group
+                      data={data}
+                      key={group.id}
+                      groupId={group.id}
+                      title={group.title}
+                    />
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </div>
+        {children}
+        <div style={{float: 'right'}}>
+          {!isMobile() && <ControlPanel data={data}/>}
+        </div>
       </div>
-      {children}
-      <div style={{float: 'right'}}>
-        <ControlPanel data={data}/>
-      </div>
-    </div>
+      {isMobile() && <MobileControlPanel data={data}/>}
+    </>
   );
 }
 
