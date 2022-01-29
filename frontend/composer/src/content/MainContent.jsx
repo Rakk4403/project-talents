@@ -114,10 +114,9 @@ function MainContent({data = {}, children}) {
         </div>
         {children}
         <div style={{float: 'right'}}>
-          {!isMobile() && <ControlPanel data={data}/>}
+          <ControlPanel data={data}/>
         </div>
       </div>
-      {isMobile() && <MobileControlPanel data={data}/>}
     </>
   );
 }
