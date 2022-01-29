@@ -1,20 +1,28 @@
 const WSURL = process.env.REACT_APP_WSURL;
 const DEBUG = process.env.REACT_APP_DEBUG;
 export const ACTION = 'create';
-let ws = new WebSocket(WSURL);
+let ws = null;
+let connectInterval = null;
 
 const connect = () => {
   return new Promise((res, rej) => {
     ws = new WebSocket(WSURL);
     ws.onopen = () => {
+      clearInterval(connectInterval);
       console.log('websocket connected', ws)
       res(ws);
     }
     ws.onerror = (err) => {
       rej(err)
     }
+    ws.onclose = () => {
+      connectInterval = setInterval(() => {
+        connect()
+      }, 1000);
+    }
   });
 }
+connect();
 
 const send = async (data) => {
   if (DEBUG) return;
