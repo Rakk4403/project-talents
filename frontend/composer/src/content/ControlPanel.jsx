@@ -70,7 +70,6 @@ function ControlPanel({data}) {
             flexFlow: 'column',
             gap: 10,
           }}>
-
             <div style={{
               display: 'flex',
               flexFlow: 'column',
@@ -104,7 +103,7 @@ function ControlPanel({data}) {
                   disableBubbleChart
                   disableDrag
                   disableDrop
-                  style={{height: '100%', width: '100%'}}
+                  style={{height: '100%', width: '100%', overflowY: 'auto'}}
                   data={data}
                 />
               </div>
