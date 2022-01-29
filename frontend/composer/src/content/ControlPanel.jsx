@@ -14,13 +14,7 @@ function ControlPanel({data}) {
     setOpenDetails(!openDetails);
   }
   return (
-    <Draggable
-      handle=".panelHandle"
-      style={{
-        position: 'fixed',
-        minWidth: 250,
-      }}
-    >
+    <Draggable handle=".panelHandle">
       <div>
         <div style={{width: 50, height: 50, display: openDetails && 'none'}}>
           <button
