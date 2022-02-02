@@ -17,6 +17,10 @@ const connect = () => {
     }
     ws.onclose = () => {
       connectInterval = setInterval(() => {
+        if (connected()) {
+          connectInterval(connectInterval)
+          return
+        }
         connect()
       }, 1000);
     }
