@@ -139,8 +139,15 @@ function Group({
         {title && !disableBubbleChart &&
         <div style={{display: 'flex', flexFlow: 'column', justifyContent: 'start'}}>
           {title &&
-          <div style={{display: 'flex', alignItems: 'left', fontWeight: 'bold', padding: 5}}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'left',
+            fontWeight: 'bold',
+            padding: 5,
+          }}>
             <ToggleInput value={title} elemId={groupId}/>
+            <span>▲</span>
           </div>
           }
           {!disableBubbleChart &&

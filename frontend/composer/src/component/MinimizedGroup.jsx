@@ -113,15 +113,14 @@ function MinimizedGroup({
       <div
         style={{
           display: 'flex',
-          flexFlow: 'column',
-          //minHeight: 300,
-          gap: 5,
-          alignItems: 'start',
+          justifyContent: 'space-between',
+          alignItems: 'center',
           ...isOverStyle,
         }}>
         <div style={{fontWeight: 'bold', padding: 5}}>
           {title}
         </div>
+        <span style={{margin: 5}}>▼</span>
       </div>
     </div>
   )
