@@ -14,89 +14,77 @@ function MobileControlPanel({data}) {
     setOpenDetails(!openDetails);
   }
   return (
-    <div
-      style={{
+    <div open={openDetails} style={{height: '100%'}}>
+      <summary style={{listStyle: 'none', display: 'none'}}/>
+      <div style={{
+        border: 'solid',
+        borderColor: 'lightgray',
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        borderWidth: 1,
+        boxShadow: "grey 1px 1px 5px",
+        backgroundColor: 'aliceblue',
+        width: window.screen.width,
+        height: '100%',
         display: 'flex',
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        width: '100%',
-        height: 100,
-        overflowX: 'scroll'
-      }}
-    >
-      <div>
-        <div open={openDetails}>
-          <summary style={{listStyle: 'none', display: 'none'}}/>
+        gap: 10,
+      }}>
+        <div style={{
+          display: 'flex',
+          flexFlow: 'column',
+          height: '95%',
+          gap: 10,
+          width: '100%',
+        }}>
           <div style={{
-            border: 'solid',
-            borderColor: 'lightgray',
-            borderBottomLeftRadius: 10,
-            borderBottomRightRadius: 10,
-            borderWidth: 1,
-            boxShadow: "grey 1px 1px 5px",
-            backgroundColor: 'aliceblue',
-            width: '100%',
-            height: 100,
             display: 'flex',
-            gap: 10,
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: '100%',
+            margin: 5,
           }}>
-            <div style={{
-              display: 'flex',
-              height: '95%',
-              gap: 10,
-              padding: 10,
-            }}>
-              <div style={{
-                display: 'flex', justifyContent: 'center',
-                alignItems: 'center'
-              }}>
-                <WasteBox data={data}/>
-              </div>
-              <div style={{
-                display: 'hidden',
-                flexFlow: 'column',
-                justifyContent: 'space-between',
-                margin: 5,
-              }}>
-                <button
-                  style={{height: 40}}
-                  onClick={() => addElem(ItemTypes.Group)}>Add Group
-                </button>
-                <button
-                  style={{height: 40}}
-                  onClick={() => addElem(ItemTypes.Member)}>Add Member
-                </button>
-                <button
-                  style={{height: 40}}
-                  onClick={() => addElem(ItemTypes.Talent)}>Add Talent
-                </button>
-              </div>
-              <div style={{display: 'flex', height: '50%'}}>
-                <Group
-                  disableBubbleChart
-                  disableDrag
-                  disableDrop
-                  style={{height: '100%', width: '100%'}}
-                  data={data}
-                />
-              </div>
-              <div style={{display: 'flex', flexWrap: 'wrap', overflow: 'auto'}}>
-                {talentKeys.map((key) =>
-                  <Talent
-                    key={key}
-                    title={data[key].title}
-                    color={data[key].color}
-                    talentId={key}
-                    style={{
-                      height: 30,
-                      flexWrap: 'wrap',
-                      overflow: 'hidden',
-                    }}
-                    tooltip={data[key].title}
-                  />)}
-              </div>
+            Drag components to Member or Group
+            <button
+              style={{height: 40}}
+              onClick={() => addElem(ItemTypes.Group)}>Add Group
+            </button>
+          </div>
+          <div style={{display: 'flex', height: '50%'}}>
+            <div style={{width: '80%', height: '100%'}}>
+              <Group
+                disableBubbleChart
+                disableDrag
+                disableDrop
+                style={{height: '100%', width: '100%'}}
+                data={data}
+              />
             </div>
+            <button
+              style={{width: '20%', height: '100%'}}
+              onClick={() => addElem(ItemTypes.Member)}>Add Member
+            </button>
+          </div>
+          <div style={{display: 'flex', height: '50%'}}>
+            <div style={{display: 'flex', flexWrap: 'wrap', width: '80%', overflow: 'auto'}}>
+              {talentKeys.map((key) =>
+                <Talent
+                  key={key}
+                  title={data[key].title}
+                  color={data[key].color}
+                  talentId={key}
+                  style={{
+                    height: 30,
+                    width: 30,
+                    flexWrap: 'wrap',
+                    overflow: 'hidden',
+                  }}
+                  tooltip={data[key].title}
+                />)}
+            </div>
+            <button
+              style={{width: '20%', height: '100%'}}
+              onClick={() => addElem(ItemTypes.Talent)}>Add Talent
+            </button>
           </div>
         </div>
       </div>
