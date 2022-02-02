@@ -24,7 +24,7 @@ function MobileControlPanel({data}) {
         borderWidth: 1,
         boxShadow: "grey 1px 1px 5px",
         backgroundColor: 'aliceblue',
-        width: window.screen.width,
+        width: window.innerWidth,
         height: '100%',
         display: 'flex',
         gap: 10,
