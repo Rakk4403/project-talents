@@ -69,12 +69,13 @@ function MainContent({data = {}, children}) {
       <div style={{
         display: 'flex',
         width: '100%',
-        height: window.innerHeight - 500,
+        height: '100%',
       }}>
         <div style={{
           display: 'flex',
           flexFlow: 'column',
           alignItems: 'start',
+          height: '100%',
           width: '100%',
         }}>
           <h1>{getProjectName()}</h1>
@@ -82,7 +83,9 @@ function MainContent({data = {}, children}) {
             id='zoomable'
             ref={zoomable}
             style={{
-              zoom: zoomValue
+              zoom: zoomValue,
+              width: '100%',
+              height: '100%',
             }}
           >
             <div
@@ -94,7 +97,8 @@ function MainContent({data = {}, children}) {
                 backgroundColor: isOver ? 'lightgray' : 'transparent',
                 display: 'flex',
                 flexWrap: 'wrap',
-                width: '80%',
+                width: '100%',
+                height: '100%',
               }}
             >
               {groups.map((group) => {
