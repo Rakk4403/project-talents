@@ -20,6 +20,7 @@ let getProjectIdInterval;
 function MainContent({data = {}, children}) {
   const params = useParams();
   const [zoomValue, setZoomValue] = useState(1);
+  const [openMenu, setOpenMenu] = useState(false);
   useEffect(() => {
     const ws = getWebsocket();
     ws.addEventListener('message', wsHandler);
@@ -103,6 +104,7 @@ function MainContent({data = {}, children}) {
                 backgroundColor: isOver ? 'lightgray' : 'transparent',
                 display: 'flex',
                 flexWrap: 'wrap',
+                alignContent: 'flex-start',
                 width: '100%',
                 height: '100%',
               }}
@@ -124,9 +126,31 @@ function MainContent({data = {}, children}) {
         </div>
         {children}
         <div style={{float: 'right'}}>
-          <ControlPanel data={data}/>
+          {!isMobile() && <ControlPanel data={data}/>}
         </div>
       </div>
+      {isMobile() &&
+      <div style={{
+        display: 'flex',
+        flexFlow: 'column',
+        height: '50%',
+        position: 'fixed',
+        bottom: 0,
+      }}>
+        {openMenu ?
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpenMenu(false);
+            }}
+          >Close</button>
+          : <button onClick={(e) => {
+            e.stopPropagation();
+            setOpenMenu(true);
+          }}>Open</button>}
+        {openMenu && <MobileControlPanel data={data}/>}
+      </div>
+      }
     </>
   );
 }
