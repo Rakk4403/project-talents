@@ -1,6 +1,7 @@
 import {useDrop} from "react-dnd";
 import {ItemTypes} from "../data/types";
 import {deleteElem} from "../data/Data";
+import trashIcon from "../res/trash.png";
 
 function WasteBox() {
   const [{isOver}, drop] = useDrop(() => ({
@@ -17,15 +18,18 @@ function WasteBox() {
     <div
       ref={drop}
       style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
         position: 'relative',
-        height: 100,
+        height: '100%',
         border: 'dashed',
         borderColor: 'gray',
         borderRadius: 5,
         width: '100%',
       }}
     >
-      WasteBox:
+      <img style={{maxWidth: '30%', maxHeight: '30%'}} src={trashIcon}/>
       {isOver && <div
         style={{
           position: 'absolute',

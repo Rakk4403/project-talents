@@ -35,6 +35,7 @@ function MobileControlPanel({data}) {
           height: '95%',
           gap: 10,
           width: '100%',
+          padding: 10,
         }}>
           <div style={{
             display: 'flex',
@@ -81,10 +82,26 @@ function MobileControlPanel({data}) {
                   tooltip={data[key].title}
                 />)}
             </div>
-            <button
-              style={{width: '20%', height: '100%'}}
-              onClick={() => addElem(ItemTypes.Talent)}>Add Talent
-            </button>
+            <div style={{
+              display: 'flex',
+              flexFlow: 'column',
+              justifyContent: 'space-between',
+              width: '20%',
+              height: '100%',
+            }}>
+              <button
+                style={{width: '100%', height: '48%'}}
+                onClick={() => addElem(ItemTypes.Talent)}>Add Talent
+              </button>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '48%',
+              }}>
+                <WasteBox data={data}/>
+              </div>
+            </div>
           </div>
         </div>
       </div>
