@@ -203,10 +203,14 @@ export const appendMember = (groupId, memberId) => {
     return;
   }
   const prevGroupId = getParentId(memberId);
-  removeChild(prevGroupId, memberId);
-  updateItem(Data[prevGroupId])
-  addChild(groupId, memberId);
-  updateItem(Data[groupId])
+  if (prevGroupId) {
+    removeChild(prevGroupId, memberId);
+    updateItem(Data[prevGroupId])
+  }
+  if (groupId) {
+    addChild(groupId, memberId);
+    updateItem(Data[groupId])
+  }
   changeParent(memberId, groupId);
   updateItem(Data[memberId])
 }

@@ -1,6 +1,12 @@
 import {useDrop} from "react-dnd";
 import {ItemTypes} from "../data/types";
-import {appendMember, getGroups, getProjectName, setProjectId, wsHandler} from "../data/Data";
+import {
+  appendMember,
+  getGroups,
+  getProjectName,
+  setProjectId,
+  wsHandler
+} from "../data/Data";
 import Group from "../component/Group";
 import ControlPanel from "./ControlPanel";
 import {useParams} from "react-router-dom";
@@ -93,7 +99,7 @@ function MainContent({data = {}, children}) {
               ref={drop}
               style={{
                 padding: 10,
-                opacity: isOver ? 0.3 : 1,
+                opacity: 1,
                 backgroundColor: isOver ? 'lightgray' : 'transparent',
                 display: 'flex',
                 flexWrap: 'wrap',

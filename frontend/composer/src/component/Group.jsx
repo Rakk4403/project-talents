@@ -1,7 +1,6 @@
 import {useDrag, useDrop} from "react-dnd";
 import {ItemTypes} from "../data/types";
 import {
-  appendMember, getAncestorsId,
   getChildrenLevels,
   getGroups,
   getLevel,
@@ -14,7 +13,7 @@ import ToggleInput from "./ToggleInput";
 import BubbleChart from "./BubbleChart";
 import {useState} from "react";
 import MinimizedGroup from "./MinimizedGroup";
-import {isMobile} from "../util/utils";
+import {dropCallable, isMobile} from "../util/utils";
 
 function arrangeLevel(groupId) {
   if (!groupId) return
@@ -32,39 +31,15 @@ function arrangeLevel(groupId) {
 
 function Group({
                  groupId, title, data, style,
-                 disableBubbleChart, disableDrag, disableDrop
+                 disableBubbleChart, disableDrag, disableDrop,
                }) {
   const level = getLevel(groupId);
-  const [{isOverCurrent}, drop] = useDrop(() => ({
+  const [{isOverCurrent, dragItem}, drop] = useDrop(() => ({
     accept: [ItemTypes.Member, ItemTypes.Group],
-    drop: (item, monitor) => {
-      if (monitor.didDrop() && !monitor.canDrop()) {
-        return;
-      }
-      if (item.type === ItemTypes.Group) {
-        if (getAncestorsId(groupId).includes(item.groupId)) {
-          return;
-        }
-        appendMember(groupId, item.groupId)
-      } else if (item.type === ItemTypes.Member) {
-        appendMember(groupId, item.memberId)
-      } else {
-        console.error('ItemTypes error', item)
-      }
-
-      if (item.type === ItemTypes.Group) {
-        const childrenLevels = getChildrenLevels(groupId);
-        childrenLevels.push(item.level);
-        const nextLevel = Math.max(...childrenLevels) + 1;
-        setLevel(groupId, nextLevel)
-        return {title}
-      }
-    },
-    canDrop: (item, monitor) => {
-      return item.groupId !== groupId && item.prevParent !== groupId;
-    },
+    drop: dropCallable(groupId),
     collect: monitor => ({
       isOverCurrent: monitor.isOver({shallow: true}),
+      dragItem: monitor.getItem(),
     }),
   }), [level, setLevel])
 
@@ -111,7 +86,7 @@ function Group({
     talentCountMap[talentId] += 1;
   })
 
-  const isOverStyle = isOverCurrent ? {
+  const isOverStyle = isOverCurrent && dragItem.groupId !== groupId ? {
     backgroundColor: 'lightgray',
   } : {};
   return (
@@ -214,7 +189,11 @@ function Group({
                       newGroups.push(group.id)
                       setExpendedGroups(newGroups)
                     }}>
-                    <MinimizedGroup data={data} groupId={group.id} title={group.title}/>
+                    <MinimizedGroup
+                      data={data}
+                      groupId={group.id}
+                      title={group.title}
+                    />
                   </div>
                 )
               }

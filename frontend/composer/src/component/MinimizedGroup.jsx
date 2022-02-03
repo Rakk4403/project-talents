@@ -1,7 +1,4 @@
 import {
-  appendMember,
-  getAncestorsId,
-  getChildrenLevels,
   getGroups,
   getLevel, getMembers, getMembersMerged,
   getParentId,
@@ -9,45 +6,20 @@ import {
 } from "../data/Data";
 import {useDrag, useDrop} from "react-dnd";
 import {ItemTypes} from "../data/types";
-import ToggleInput from "./ToggleInput";
-import BubbleChart from "./BubbleChart";
-import Member from "./Member";
+
+import {dropCallable} from "../util/utils";
 
 function MinimizedGroup({
                           groupId, title, data, style,
                           disableBubbleChart, disableDrag, disableDrop
                         }) {
   const level = getLevel(groupId);
-  const [{isOverCurrent}, drop] = useDrop(() => ({
+  const [{isOverCurrent, dragItem}, drop] = useDrop(() => ({
     accept: [ItemTypes.Member, ItemTypes.Group],
-    drop: (item, monitor) => {
-      if (monitor.didDrop() && !monitor.canDrop()) {
-        return;
-      }
-      if (item.type === ItemTypes.Group) {
-        if (getAncestorsId(groupId).includes(item.groupId)) {
-          return;
-        }
-        appendMember(groupId, item.groupId)
-      } else if (item.type === ItemTypes.Member) {
-        appendMember(groupId, item.memberId)
-      } else {
-        console.error('ItemTypes error', item)
-      }
-
-      if (item.type === ItemTypes.Group) {
-        const childrenLevels = getChildrenLevels(groupId);
-        childrenLevels.push(item.level);
-        const nextLevel = Math.max(...childrenLevels) + 1;
-        setLevel(groupId, nextLevel)
-        return {title}
-      }
-    },
-    canDrop: (item, monitor) => {
-      return item.groupId !== groupId && item.prevParent !== groupId;
-    },
+    drop: dropCallable(groupId),
     collect: monitor => ({
       isOverCurrent: monitor.isOver({shallow: true}),
+      dragItem: monitor.getItem(),
     }),
   }), [level, setLevel])
 
@@ -93,7 +65,7 @@ function MinimizedGroup({
   })
 
   const width = (style && style.width) || 100 + level * 150;
-  const isOverStyle = isOverCurrent ? {
+  const isOverStyle = isOverCurrent && dragItem.groupId !== groupId ? {
     backgroundColor: 'lightgray',
   } : {};
   return (
