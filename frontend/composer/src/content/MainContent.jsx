@@ -85,16 +85,17 @@ function MainContent({data = {}, children}) {
           height: '100%',
           width: '100%',
         }}>
-          <h1>{getProjectName()}</h1>
           <div
             id='zoomable'
             ref={zoomable}
             style={{
-              zoom: zoomValue,
+              // zoom: zoomValue,
               width: '100%',
-              height: '100%',
+              height: isMobile() && openMenu ? '50%' : '100%',
+              overflow: 'scroll',
             }}
           >
+            <h1>{getProjectName()}</h1>
             <div
               id="playground"
               ref={drop}
@@ -123,6 +124,30 @@ function MainContent({data = {}, children}) {
               })}
             </div>
           </div>
+          {isMobile() &&
+          <div style={{
+            display: 'flex',
+            flexFlow: 'column',
+            height: openMenu && '50%',
+            position: 'fixed',
+            bottom: 0,
+            justifyContent: 'end',
+            width: '100%',
+          }}>
+            {openMenu ?
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenMenu(false);
+                }}
+              >Close</button>
+              : <button onClick={(e) => {
+                e.stopPropagation();
+                setOpenMenu(true);
+              }}>Open</button>}
+            {openMenu && <MobileControlPanel data={data}/>}
+          </div>
+          }
         </div>
         {children}
       </div>
@@ -133,28 +158,6 @@ function MainContent({data = {}, children}) {
         right: 0,
       }}>
         <ControlPanel data={data}/>
-      </div>
-      }
-      {isMobile() &&
-      <div style={{
-        display: 'flex',
-        flexFlow: 'column',
-        height: '50%',
-        position: 'fixed',
-        bottom: 0,
-      }}>
-        {openMenu ?
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setOpenMenu(false);
-            }}
-          >Close</button>
-          : <button onClick={(e) => {
-            e.stopPropagation();
-            setOpenMenu(true);
-          }}>Open</button>}
-        {openMenu && <MobileControlPanel data={data}/>}
       </div>
       }
     </>
