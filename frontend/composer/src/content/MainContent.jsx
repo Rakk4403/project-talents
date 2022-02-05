@@ -125,10 +125,16 @@ function MainContent({data = {}, children}) {
           </div>
         </div>
         {children}
-        <div style={{float: 'right'}}>
-          {!isMobile() && <ControlPanel data={data}/>}
-        </div>
       </div>
+      {!isMobile() &&
+      <div style={{
+        position: 'absolute',
+        float: 'right',
+        right: 0,
+      }}>
+        <ControlPanel data={data}/>
+      </div>
+      }
       {isMobile() &&
       <div style={{
         display: 'flex',
