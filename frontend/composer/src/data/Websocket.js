@@ -16,13 +16,15 @@ const connect = () => {
       rej(err)
     }
     ws.onclose = () => {
-      connectInterval = setInterval(() => {
-        if (connected()) {
-          connectInterval(connectInterval)
-          return
-        }
-        connect()
-      }, 1000);
+      if (!connectInterval) {
+        connectInterval = setInterval(() => {
+          if (connected()) {
+            clearInterval(connectInterval)
+            return
+          }
+          connect()
+        }, 1000);
+      }
     }
   });
 }
