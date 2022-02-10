@@ -8,7 +8,12 @@ const connect = () => {
   return new Promise((res, rej) => {
     ws = new WebSocket(WSURL);
     ws.onopen = () => {
-      clearInterval(connectInterval);
+      connectInterval = setInterval(() => {
+        if (connected()) {
+          send({operation: 'ping', action: ACTION})
+        }
+      }, 400000);
+
       console.log('websocket connected', ws)
       res(ws);
     }
@@ -16,15 +21,7 @@ const connect = () => {
       rej(err)
     }
     ws.onclose = () => {
-      if (!connectInterval) {
-        connectInterval = setInterval(() => {
-          if (connected()) {
-            clearInterval(connectInterval)
-            return
-          }
-          connect()
-        }, 1000);
-      }
+      clearInterval(connectInterval);
     }
   });
 }
