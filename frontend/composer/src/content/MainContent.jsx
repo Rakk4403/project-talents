@@ -71,6 +71,10 @@ function MainContent({data = {}, children}) {
       setZoomValue(widthRatio < heightRatio ? widthRatio : heightRatio)
     }
   }, [zoomable.current])
+
+  useEffect(() => {
+    window.addEventListener('focus', () => requestList(params.projectId))
+  }, [])
   return (
     <>
       <div style={{
