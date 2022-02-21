@@ -9,7 +9,10 @@ import {useState} from "react";
 function ControlPanel({data}) {
   const [openDetails, setOpenDetails] = useState(true);
   const keys = Object.keys(data);
-  const talentKeys = keys.filter((key) => data[key].type === ItemTypes.Talent);
+  const talentKeys = keys
+    .filter((key) => data[key].type === ItemTypes.Talent)
+    .sort((aKey, bKey) =>
+      data[aKey].id <= data[bKey].id ? 1 : -1);
   const toggleDetails = () => {
     setOpenDetails(!openDetails);
   }

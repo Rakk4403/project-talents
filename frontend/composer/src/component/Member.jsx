@@ -32,7 +32,9 @@ function Member({memberId, title, talentIds, data}) {
     drop(el)
   }
 
-  const talents = Object.values(data).filter((elem) => talentIds.includes(elem.id));
+  const talents = Object.values(data)
+    .filter((elem) => talentIds.includes(elem.id))
+    .sort((a, b) => a.id <= b.id ? 1 : -1);
   return (
     <div
       ref={attachRef}

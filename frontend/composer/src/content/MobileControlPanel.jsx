@@ -67,20 +67,23 @@ function MobileControlPanel({data}) {
           </div>
           <div style={{display: 'flex', height: '50%'}}>
             <div style={{display: 'flex', flexWrap: 'wrap', width: '80%', overflow: 'auto'}}>
-              {talentKeys.map((key) =>
-                <Talent
-                  key={key}
-                  title={data[key].title}
-                  color={data[key].color}
-                  talentId={key}
-                  style={{
-                    height: 30,
-                    width: 30,
-                    flexWrap: 'wrap',
-                    overflow: 'hidden',
-                  }}
-                  tooltip={data[key].title}
-                />)}
+              {talentKeys
+                .sort((aKey, bKey) =>
+                  data[aKey].id <= data[bKey].id ? 1 : -1)
+                .map((key) =>
+                  <Talent
+                    key={key}
+                    title={data[key].title}
+                    color={data[key].color}
+                    talentId={key}
+                    style={{
+                      height: 30,
+                      width: 30,
+                      flexWrap: 'wrap',
+                      overflow: 'hidden',
+                    }}
+                    tooltip={data[key].title}
+                  />)}
             </div>
             <div style={{
               display: 'flex',
