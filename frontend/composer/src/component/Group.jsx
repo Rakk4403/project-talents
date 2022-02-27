@@ -2,7 +2,7 @@ import {useDrag, useDrop} from "react-dnd";
 import {ItemTypes} from "../data/types";
 import {
   getChildrenLevels,
-  getGroups,
+  getGroups, getGroupsMerged,
   getLevel,
   getMembers,
   getMembersMerged, getParentId,
@@ -193,6 +193,8 @@ function Group({
                       data={data}
                       groupId={group.id}
                       title={group.title}
+                      childrenGroup={getGroupsMerged(group.id)}
+                      childrenMember={getMembersMerged(group.id)}
                     />
                   </div>
                 )

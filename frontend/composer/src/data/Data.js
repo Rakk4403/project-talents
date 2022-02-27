@@ -198,6 +198,26 @@ export const getMembersMerged = (groupId) => {
   return members.concat(ownMembers);
 }
 
+export const getGroupsMerged = (groupId) => {
+  if (!groupId) {
+    return Object.values(Data)
+      .filter((elem) => !elem.parent)
+      .filter((elem) => elem.type === ItemTypes.Group)
+  }
+  let groups = [];
+  if (Data[groupId] && Data[groupId].children) {
+    Data[groupId].children
+      .filter((childId) => Data[childId].type === ItemTypes.Group)
+      .forEach((groupId) => {
+        const m = getGroupsMerged(groupId);
+        groups = groups.concat(m);
+      })
+  }
+
+  const ownGroups = getGroups(groupId);
+  return groups.concat(ownGroups);
+}
+
 export const appendMember = (groupId, memberId) => {
   if (groupId && hasChild(groupId, memberId)) {
     return;

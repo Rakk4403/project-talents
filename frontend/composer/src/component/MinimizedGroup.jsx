@@ -11,7 +11,8 @@ import {dropCallable} from "../util/utils";
 
 function MinimizedGroup({
                           groupId, title, data, style,
-                          disableBubbleChart, disableDrag, disableDrop
+                          disableBubbleChart, disableDrag, disableDrop,
+                          childrenGroup, childrenMember,
                         }) {
   const level = getLevel(groupId);
   const [{isOverCurrent, dragItem}, drop] = useDrop(() => ({
@@ -89,10 +90,27 @@ function MinimizedGroup({
           alignItems: 'center',
           ...isOverStyle,
         }}>
-        <div style={{fontWeight: 'bold', padding: 5}}>
-          {title}
+        <div style={{display: 'flex'}}>
+          <div style={{fontWeight: 'bold', padding: 5}}>
+            {title}
+          </div>
+          <span style={{margin: 5}}>▼</span>
         </div>
-        <span style={{margin: 5}}>▼</span>
+        <div style={{display: 'flex'}}>
+          <div style={{
+            border: 'solid 1px lightgray',
+            borderRadius: 20,
+            width: 20,
+          }}>{childrenGroup.length || '-'}</div>
+          <div style={{
+            border: 'solid 1px transparent',
+            borderRadius: 10,
+            backgroundColor: 'lightgray',
+            width: 20,
+            marginLeft: 5,
+            marginRight: 5,
+          }}>{childrenMember.length || '-'}</div>
+        </div>
       </div>
     </div>
   )
@@ -101,6 +119,7 @@ function MinimizedGroup({
 MinimizedGroup.defaultProps = {
   data: {},
   members: [],
+  childrenGroup: [],
   disableDrag: false,
   disableDrop: false,
 }
