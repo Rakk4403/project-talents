@@ -12,7 +12,7 @@ function ControlPanel({data}) {
   const talentKeys = keys
     .filter((key) => data[key].type === ItemTypes.Talent)
     .sort((aKey, bKey) =>
-      data[aKey].id <= data[bKey].id ? 1 : -1);
+      data[aKey].created <= data[bKey].created ? -1 : 1);
   const toggleDetails = () => {
     setOpenDetails(!openDetails);
   }

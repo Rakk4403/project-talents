@@ -34,7 +34,7 @@ function Member({memberId, title, talentIds, data}) {
 
   const talents = Object.values(data)
     .filter((elem) => talentIds.includes(elem.id))
-    .sort((a, b) => a.id <= b.id ? 1 : -1);
+    .sort((a, b) => a.created <= b.created ? -1 : 1);
   return (
     <div
       ref={attachRef}
