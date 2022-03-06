@@ -19,6 +19,7 @@ let getProjectIdInterval;
 
 function MainContent({data = {}, children}) {
   const params = useParams();
+  const [isLoading, setIsLoading] = useState(true);
   const [zoomValue, setZoomValue] = useState(1);
   const [openMenu, setOpenMenu] = useState(false);
   useEffect(() => {
@@ -30,6 +31,7 @@ function MainContent({data = {}, children}) {
         setProjectId(params.projectId || '');
         requestList(params.projectId);
         clearInterval(getProjectIdInterval);
+        setIsLoading(false);
       }
     }, 1000);
 
@@ -146,6 +148,7 @@ function MainContent({data = {}, children}) {
                   height: '100%',
                 }}
               >
+                {isLoading && `Loading Now ...`}
                 {groups.map((group) => {
                   return (
                     <div key={group.id} style={{margin: 5}}>
