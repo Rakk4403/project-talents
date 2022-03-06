@@ -1,6 +1,6 @@
 import WasteBox from "../component/WasteBox";
 import {addElem} from "../data/Data";
-import {ItemTypes} from "../data/types";
+import {ItemTypes} from "../data/Types";
 import Group from "../component/Group";
 import Talent from "../component/Talent";
 import Draggable from "react-draggable";

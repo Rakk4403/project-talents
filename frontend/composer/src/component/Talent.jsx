@@ -1,5 +1,5 @@
 import {useDrag} from "react-dnd";
-import {ItemTypes} from "../data/types";
+import {ItemTypes} from "../data/Types";
 import ToggleInput from "./ToggleInput";
 
 function Talent({title, talentId, color, style, tooltip}) {

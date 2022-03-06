@@ -1,5 +1,5 @@
 import {useDrop} from "react-dnd";
-import {ItemTypes} from "../data/types";
+import {ItemTypes} from "../data/Types";
 import {deleteElem} from "../data/Data";
 import trashIcon from "../res/trash.png";
 

@@ -1,5 +1,5 @@
 import {useDrop} from "react-dnd";
-import {ItemTypes} from "../data/types";
+import {ItemTypes} from "../data/Types";
 import {
   appendMember,
   getGroups,
@@ -12,7 +12,7 @@ import ControlPanel from "./ControlPanel";
 import {Link, useParams} from "react-router-dom";
 import {connected, getWebsocket, requestList} from "../data/Websocket";
 import {useEffect, useRef, useState} from "react";
-import {isMobile} from "../util/utils";
+import {isMobile} from "../util/Utils";
 import MobileControlPanel from "./MobileControlPanel";
 
 let getProjectIdInterval;

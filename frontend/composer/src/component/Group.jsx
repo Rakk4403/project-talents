@@ -1,5 +1,5 @@
 import {useDrag, useDrop} from "react-dnd";
-import {ItemTypes} from "../data/types";
+import {ItemTypes} from "../data/Types";
 import {
   getChildrenLevels,
   getGroups, getGroupsMerged,
@@ -13,7 +13,7 @@ import ToggleInput from "./ToggleInput";
 import BubbleChart from "./BubbleChart";
 import {useState} from "react";
 import MinimizedGroup from "./MinimizedGroup";
-import {dropCallable, isMobile} from "../util/utils";
+import {dropCallable, isMobile} from "../util/Utils";
 
 function arrangeLevel(groupId) {
   if (!groupId) return

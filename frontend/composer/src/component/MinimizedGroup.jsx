@@ -5,9 +5,9 @@ import {
   setLevel
 } from "../data/Data";
 import {useDrag, useDrop} from "react-dnd";
-import {ItemTypes} from "../data/types";
+import {ItemTypes} from "../data/Types";
 
-import {dropCallable} from "../util/utils";
+import {dropCallable} from "../util/Utils";
 
 function MinimizedGroup({
                           groupId, title, data, style,

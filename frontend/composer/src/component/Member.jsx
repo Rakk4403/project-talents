@@ -1,5 +1,5 @@
 import {useDrag, useDrop} from "react-dnd";
-import {ItemTypes} from "../data/types";
+import {ItemTypes} from "../data/Types";
 import {appendTalent} from "../data/Data";
 import ToggleInput from "./ToggleInput";
 import Circle from "./Circle";

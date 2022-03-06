@@ -1,5 +1,5 @@
 import {useDrag} from "react-dnd";
-import {ItemTypes} from "../data/types";
+import {ItemTypes} from "../data/Types";
 
 function MemberedGroup({groupId, title}) {
   const [{isDragging}, drag] = useDrag(() => ({

@@ -1,4 +1,4 @@
-import {ItemTypes} from "./types";
+import {ItemTypes} from "./Types";
 import {createItem, deleteItem, requestList, sendProjectId, updateItem} from "./Websocket";
 
 let projectId = '';

@@ -1,5 +1,5 @@
 /* eslint-disable no-useless-escape */
-import {ItemTypes} from "../data/types";
+import {ItemTypes} from "../data/Types";
 import {appendMember, getAncestorsId, getChildrenLevels, setLevel} from "../data/Data";
 
 export const isMobile = function () {
