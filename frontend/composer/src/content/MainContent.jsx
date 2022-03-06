@@ -9,7 +9,7 @@ import {
 } from "../data/Data";
 import Group from "../component/Group";
 import ControlPanel from "./ControlPanel";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {connected, getWebsocket, requestList} from "../data/Websocket";
 import {useEffect, useRef, useState} from "react";
 import {isMobile} from "../util/utils";
@@ -75,96 +75,129 @@ function MainContent({data = {}, children}) {
   useEffect(() => {
     window.addEventListener('focus', () => requestList(params.projectId))
   }, [])
+
   return (
-    <>
-      <div style={{
-        display: 'flex',
-        width: '100%',
-        height: '100%',
-      }}>
+    <div style={{
+      width: '100%',
+      height: '100%',
+    }}>
+      <div
+        className="AppBar"
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          width: '100%',
+          height: 40,
+          backgroundColor: 'lightslategray',
+          zIndex: 99,
+        }}
+      >
+        <div style={{display: 'flex', alignItems: 'center',}}>
+          <Link to="/">
+            <div
+              style={{margin: 10, cursor: 'pointer'}}
+              onClick={<Link to="/"/>}
+            >
+              Project Talents
+            </div>
+          </Link>
+          {
+            params.projectId &&
+            <div>
+              {` > ${params.projectId}`}
+            </div>
+          }
+        </div>
+      </div>
+      <div style={{display: 'flex', height: '100%', width: '100%'}}>
         <div style={{
           display: 'flex',
-          flexFlow: 'column',
-          alignItems: 'start',
-          height: '100%',
           width: '100%',
+          height: '100%',
         }}>
-          <div
-            id='zoomable'
-            ref={zoomable}
-            style={{
-              // zoom: zoomValue,
-              width: '100%',
-              height: isMobile() && openMenu ? '50%' : '100%',
-              overflow: 'scroll',
-            }}
-          >
-            <h1>{getProjectName()}</h1>
-            <div
-              id="playground"
-              ref={drop}
-              style={{
-                padding: 10,
-                opacity: 1,
-                backgroundColor: isOver ? 'lightgray' : 'transparent',
-                display: 'flex',
-                flexWrap: 'wrap',
-                alignContent: 'flex-start',
-                width: '100%',
-                height: '100%',
-              }}
-            >
-              {groups.map((group) => {
-                return (
-                  <div key={group.id} style={{margin: 5}}>
-                    <Group
-                      data={data}
-                      key={group.id}
-                      groupId={group.id}
-                      title={group.title}
-                    />
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-          {isMobile() &&
           <div style={{
             display: 'flex',
             flexFlow: 'column',
-            height: openMenu && '50%',
-            position: 'fixed',
-            bottom: 0,
-            justifyContent: 'end',
+            alignItems: 'start',
+            height: '100%',
             width: '100%',
           }}>
-            {openMenu ?
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setOpenMenu(false);
+            <div
+              id='zoomable'
+              ref={zoomable}
+              style={{
+                // zoom: zoomValue,
+                width: '100%',
+                height: isMobile() && openMenu ? '50%' : '100%',
+                overflow: 'scroll',
+              }}
+            >
+              <div
+                id="playground"
+                ref={drop}
+                style={{
+                  padding: 10,
+                  opacity: 1,
+                  backgroundColor: isOver ? 'lightgray' : 'transparent',
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  alignContent: 'flex-start',
+                  width: '100%',
+                  height: '100%',
                 }}
-              >Close</button>
-              : <button onClick={(e) => {
-                e.stopPropagation();
-                setOpenMenu(true);
-              }}>Open</button>}
-            {openMenu && <MobileControlPanel data={data}/>}
+              >
+                {groups.map((group) => {
+                  return (
+                    <div key={group.id} style={{margin: 5}}>
+                      <Group
+                        data={data}
+                        key={group.id}
+                        groupId={group.id}
+                        title={group.title}
+                      />
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+            {isMobile() &&
+            <div style={{
+              display: 'flex',
+              flexFlow: 'column',
+              height: openMenu && '50%',
+              position: 'fixed',
+              bottom: 0,
+              justifyContent: 'end',
+              width: '100%',
+            }}>
+              {openMenu ?
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOpenMenu(false);
+                  }}
+                >Close</button>
+                : <button onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenMenu(true);
+                }}>Open</button>}
+              {openMenu && <MobileControlPanel data={data}/>}
+            </div>
+            }
           </div>
-          }
+          {children}
         </div>
-        {children}
+        {!isMobile() &&
+        <div style={{
+          position: 'absolute',
+          float: 'right',
+          right: 0,
+        }}>
+          <ControlPanel data={data}/>
+        </div>
+        }
       </div>
-      {!isMobile() &&
-      <div style={{
-        position: 'absolute',
-        float: 'right',
-        right: 0,
-      }}>
-        <ControlPanel data={data}/>
-      </div>
-      }
-    </>
+    </div>
   );
 }
 
