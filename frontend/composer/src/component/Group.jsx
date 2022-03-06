@@ -109,6 +109,7 @@ function Group({
         style={{
           display: 'flex',
           gap: 5,
+          overflow: 'auto',
           ...isOverStyle,
         }}>
         {title && !disableBubbleChart &&
@@ -139,8 +140,12 @@ function Group({
           }
         </div>
         }
-        <div style={{display: 'flex', flexFlow: 'column', minWidth: 200}}>
-          <div style={{overflowY: 'auto', minWidth: 100, maxWidth: 250}}>
+        <div style={{
+          display: 'flex',
+          flexFlow: 'column',
+          minWidth: 200,
+        }}>
+          <div style={{overflow: 'auto', minWidth: 100, maxWidth: 250}}>
             {members && members
               .map((user) => (
                 <div

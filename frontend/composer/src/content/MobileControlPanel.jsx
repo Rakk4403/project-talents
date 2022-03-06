@@ -44,13 +44,21 @@ function MobileControlPanel({data}) {
             width: '100%',
             margin: 5,
           }}>
-            Drag components to Member or Group
+            <div style={{display: 'flex', justifyContent: 'space-between'}}>
+              <div>
+                Hold & Drag:
+              </div>
+              <div>
+                <li>Talent to Member</li>
+                <li>Member to Group</li>
+              </div>
+            </div>
             <button
               style={{height: 40}}
               onClick={() => addElem(ItemTypes.Group)}>Add Group
             </button>
           </div>
-          <div style={{display: 'flex', height: '50%'}}>
+          <div style={{display: 'flex', height: '40%'}}>
             <div style={{width: '80%', height: '100%'}}>
               <Group
                 disableBubbleChart
@@ -65,7 +73,7 @@ function MobileControlPanel({data}) {
               onClick={() => addElem(ItemTypes.Member)}>Add Member
             </button>
           </div>
-          <div style={{display: 'flex', height: '50%'}}>
+          <div style={{display: 'flex', height: '30%'}}>
             <div style={{display: 'flex', flexWrap: 'wrap', width: '80%', overflow: 'auto'}}>
               {talentKeys
                 .sort((aKey, bKey) =>
